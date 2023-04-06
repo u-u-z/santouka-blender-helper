@@ -1,0 +1,25 @@
+# venv
+venv/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Editor / IDE specific
+.idea/
+.vscode/
+*.swp
+*~
+
+# Environment
+.env
+.env.*
+
+tmp.py
+bpy.pth
