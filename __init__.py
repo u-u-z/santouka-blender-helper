@@ -11,7 +11,6 @@ class MYADDON_PG_custom_properties(bpy.types.PropertyGroup):
     my_bool: bpy.props.BoolProperty(name="Test Bool")
     my_float: bpy.props.FloatProperty(name="Test Float")
 
-
 class MessageBox(bpy.types.Operator):
     icon: bpy.props.StringProperty(name="Icon", default="ERROR")
     message: bpy.props.StringProperty(name="Message", default="")
@@ -67,15 +66,49 @@ class OBJECT_OT_undo_last(bpy.types.Operator):
         bpy.ops.ed.undo()
         return {'FINISHED'}
 
-class SimpleAddonPanel2(bpy.types.Panel):
-    bl_label = "山头火工具箱2"
-    bl_idname = "OBJECT_PT_simple_addon_2"
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
-    bl_category = "山头火工具箱"
+
+class ThinningObject(bpy.types.Operator):
+    bl_idname = "object.thinning_object"
+    bl_label = "减小模型厚度 -0.2"
     
-    def draw(self, context):
-        layout = self.layout
+    def execute(self, context):
+        selected_objects = context.selected_objects
+        if len(selected_objects) == 0:
+            show_message_box("没有选择任何对象")
+            return {'FINISHED'}
+        else:
+            for obj in selected_objects:
+                bpy.context.view_layer.objects.active = obj
+                bpy.ops.object.mode_set(mode='EDIT')
+                bpy.ops.mesh.select_all(action='SELECT')
+                bpy.ops.mesh.select_mode(type="FACE")
+                bpy.ops.transform.shrink_fatten(
+                    value=-0.2, 
+                    use_even_offset=False, 
+                    mirror=True, 
+                    use_proportional_edit=True, 
+                    proportional_edit_falloff='SMOOTH', 
+                    proportional_size=0.909091, 
+                    use_proportional_connected=False, 
+                    use_proportional_projected=False, 
+                    snap=False,
+                    release_confirm=True
+                )
+                bpy.ops.object.mode_set(mode='OBJECT')
+
+        return {'FINISHED'}
+    
+
+
+# class SimpleAddonPanel2(bpy.types.Panel):
+#     bl_label = "山头火工具箱2"
+#     bl_idname = "OBJECT_PT_simple_addon_2"
+#     bl_space_type = 'VIEW_3D'
+#     bl_region_type = 'UI'
+#     bl_category = "山头火工具箱"
+    
+#     def draw(self, context):
+#         layout = self.layout
 
 class SimpleAddonPanel(bpy.types.Panel):
     bl_label = "山头火工具箱"
@@ -84,7 +117,7 @@ class SimpleAddonPanel(bpy.types.Panel):
     
     bl_space_type = 'PROPERTIES' # 'VIEW_3D'
     bl_region_type = 'WINDOW' # 'UI'
-    bl_context = 'object'
+    bl_context = 'scene'
 
     def draw(self, context):
         layout = self.layout
@@ -94,58 +127,59 @@ class SimpleAddonPanel(bpy.types.Panel):
         col.operator("object.add_cube")
         col.operator("object.undo_last")
         col.operator("object.move_to_zero")
+        col.operator("object.thinning_object")
         
-        obj = context.object
+        #obj = context.object
         
         row = layout.row()
         row.label(text="Hello World", icon='WORLD_DATA')
         
-        row = layout.row()
-        row.prop(obj, "name")
+        # row = layout.row()
+        # row.prop(obj, "name")
 
-class MYADDON_OT_modal_dialog(bpy.types.Operator):
-    bl_idname = "myaddon.modal_dialog"
-    bl_label = "My Addon Dialog"
+# class MYADDON_OT_modal_dialog(bpy.types.Operator):
+#     bl_idname = "myaddon.modal_dialog"
+#     bl_label = "My Addon Dialog"
     
-    my_string: bpy.props.StringProperty(name="自定义属性")
+#     my_string: bpy.props.StringProperty(name="自定义属性")
 
-    def execute(self, context):
-        return {'FINISHED'}
+#     def execute(self, context):
+#         return {'FINISHED'}
 
-    def invoke(self, context, event):
-        return context.window_manager.invoke_props_dialog(self)
+#     def invoke(self, context, event):
+#         return context.window_manager.invoke_props_dialog(self)
 
-    def draw(self, context):
-        layout = self.layout
-        layout.prop(self, "my_string")
+#     def draw(self, context):
+#         layout = self.layout
+#         layout.prop(self, "my_string")
         
         
-class MYADDON_PT_show_dialog(bpy.types.Panel):
-    bl_label = "My Addon"
-    bl_idname = "MYADDON_PT_show_dialog"
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
-    bl_category = 'My Addon'
+# class MYADDON_PT_show_dialog(bpy.types.Panel):
+#     bl_label = "My Addon"
+#     bl_idname = "MYADDON_PT_show_dialog"
+#     bl_space_type = 'VIEW_3D'
+#     bl_region_type = 'UI'
+#     bl_category = 'My Addon'
 
-    def draw(self, context):
-        layout = self.layout
-        layout.operator("myaddon.modal_dialog")
+#     def draw(self, context):
+#         layout = self.layout
+#         layout.operator("myaddon.modal_dialog")
         
-class MYADDON_PT_custom_panel(bpy.types.Panel):
-    bl_label = "My Addon"
-    bl_idname = "MYADDON_PT_custom_panel"
-    bl_space_type = 'PROPERTIES'
-    bl_region_type = 'WINDOW'
-    bl_context = 'scene'
+# class (bpy.types.Panel):
+#     bl_label = "My Addon"
+#     bl_idname = ""
+#     bl_space_type = 'PROPERTIES'
+#     bl_region_type = 'WINDOW'
+#     bl_context = 'scene'
     
-    def draw(self, context):
-        layout = self.layout
-        scene = context.scene
-        custom_props = scene.my_addon_custom_props
-        layout.prop(custom_props, "my_string")
-        layout.prop(custom_props, "my_bool")
-        layout.prop(custom_props, "my_float")
-        layout.operator("myaddon.modal_dialog")
+#     def draw(self, context):
+#         layout = self.layout
+#         scene = context.scene
+#         custom_props = scene.my_addon_custom_props
+#         layout.prop(custom_props, "my_string")
+#         layout.prop(custom_props, "my_bool")
+#         layout.prop(custom_props, "my_float")
+#         layout.operator("myaddon.modal_dialog")
 
 def register():
     bpy.utils.register_class(MYADDON_PG_custom_properties)
@@ -154,23 +188,25 @@ def register():
     bpy.utils.register_class(OBJECT_OT_add_cube)
     bpy.utils.register_class(OBJECT_OT_undo_last)
     bpy.utils.register_class(OBJECT_OT_move_to_zero)
+    bpy.utils.register_class(ThinningObject)
     bpy.utils.register_class(SimpleAddonPanel)
-    bpy.utils.register_class(MYADDON_PT_custom_panel)
-    bpy.utils.register_class(MYADDON_OT_modal_dialog)
-    bpy.utils.register_class(MYADDON_PT_show_dialog)
+    #bpy.utils.register_class()
+    #bpy.utils.register_class(MYADDON_OT_modal_dialog)
+    #bpy.utils.register_class(MYADDON_PT_show_dialog)
 
 def unregister():
     bpy.utils.unregister_class(MessageBox)
     bpy.utils.unregister_class(OBJECT_OT_add_cube)
     bpy.utils.unregister_class(OBJECT_OT_undo_last)
     bpy.utils.unregister_class(OBJECT_OT_move_to_zero)
+    bpy.utils.unregister_class(ThinningObject)
     bpy.utils.unregister_class(SimpleAddonPanel)
     del bpy.types.Scene.my_addon_custom_props
     bpy.utils.unregister_class(MYADDON_PG_custom_properties)
-    bpy.utils.unregister_class(MYADDON_PT_custom_panel)
-    bpy.utils.unregister_class(MYADDON_OT_modal_dialog)
-    bpy.utils.unregister_class(MYADDON_PT_show_dialog)
+    #bpy.utils.unregister_class()
+    #bpy.utils.unregister_class(MYADDON_OT_modal_dialog)
+    #bpy.utils.unregister_class(MYADDON_PT_show_dialog)
 
 if __name__ == "__main__":
     register()
-    # unregister() #for
+    #unregister() #for
