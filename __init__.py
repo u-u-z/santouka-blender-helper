@@ -1,4 +1,7 @@
 import bpy
+import bmesh
+from mathutils import Vector, Matrix
+
 
 bl_info = {
     "name": "山头火工具箱",
@@ -62,6 +65,7 @@ class OBJECT_OT_undo_last(bpy.types.Operator):
         bpy.ops.ed.undo()
         return {'FINISHED'}
 
+
 class ThinningObject(bpy.types.Operator):
     bl_idname = "object.thinning_object"
     bl_label = "减小/增加 模型厚度（双平行面）"
@@ -93,6 +97,36 @@ class ThinningObject(bpy.types.Operator):
                 )
                 bpy.ops.object.mode_set(mode='OBJECT')
         return {'FINISHED'}
+
+class CreateObjectsProjectionToZ(bpy.types.Operator):
+    bl_idname = "object.create_object_projection"
+    bl_label = "创建投影"
+
+    def execute(self, context):
+        selected_objects = context.selected_objects
+        if len(selected_objects) == 0:
+            show_message_box("没有选择任何对象")
+            return {'FINISHED'}
+        else:
+            for obj in selected_objects:
+                bpy.context.view_layer.objects.active = obj
+                mesh_data = bpy.data.meshes.new("projection")
+                projection_object = bpy.data.objects.new("projection", mesh_data)
+                scene = bpy.context.scene
+                scene.collection.objects.link(projection_object)
+                bm = bmesh.new()
+                bm.from_mesh(obj.data)
+                bm.transform(obj.matrix_world)
+                matrix_proj = Matrix()
+                matrix_proj[0][0] = 1
+                matrix_proj[1][1] = 1
+                matrix_proj[2][2] = 0
+                for v in bm.verts:
+                    v.co = matrix_proj @ v.co
+                bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=0.0001)
+                bm.to_mesh(mesh_data)
+                bm.free()
+
 class SimpleAddonPanel(bpy.types.Panel):
     bl_label = "山头火工具箱"
     bl_idname = "OBJECT_PT_simple_addon"
@@ -110,6 +144,7 @@ class SimpleAddonPanel(bpy.types.Panel):
         col.operator("object.add_cube")
         col.operator("object.undo_last")
         col.operator("object.move_to_zero")
+        col.operator("object.create_object_projection")
 
         col.label(text="减薄/增厚(正增负减)", icon='WORLD_DATA')
         custom_props = context.scene.custom_props
@@ -125,6 +160,7 @@ def register():
     bpy.utils.register_class(OBJECT_OT_move_to_zero)
     bpy.utils.register_class(ThinningObject)
     bpy.utils.register_class(SimpleAddonPanel)
+    bpy.utils.register_class(CreateObjectsProjectionToZ)
 
 def unregister():
     bpy.utils.unregister_class(MessageBox)
@@ -135,6 +171,7 @@ def unregister():
     bpy.utils.unregister_class(SimpleAddonPanel)
     del bpy.types.Scene.custom_props
     bpy.utils.unregister_class(CustomProperties)
+    bpy.utils.unregister_class(CreateObjectsProjectionToZ)
                                
 if __name__ == "__main__":
     register()
