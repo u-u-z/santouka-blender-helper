@@ -111,7 +111,7 @@ class ThinningObject(bpy.types.Operator):
 
 class CreateObjectsProjectionToZ(bpy.types.Operator):
     bl_idname = "object.create_object_projection"
-    bl_label = "创建投影"
+    bl_label = "创建（z轴）投影"
 
     def execute(self, context):
         selected_objects = context.selected_objects
@@ -151,14 +151,12 @@ class SimpleAddonPanel(bpy.types.Panel):
 
     def draw(self, context):
         layout = self.layout
-        #
         col = layout.column()
-        col.label(text="基本操作", icon='WORLD_DATA')
-        col.operator("object.add_cube")
-        col.operator("object.undo_last")
+        col.label(text="移动对象（请选择对象）", icon='WORLD_DATA')
+        col.operator("object.reset_origin_and_move_to_zero")
         col.operator("object.move_to_zero")
+        col.label(text="投影", icon='WORLD_DATA')
         col.operator("object.create_object_projection")
-
         col.label(text="减薄/增厚(正增负减)", icon='WORLD_DATA')
         custom_props = context.scene.custom_props
         col.prop(custom_props, "thinning_float")
@@ -170,9 +168,8 @@ def register():
     bpy.types.Scene.custom_props = bpy.props.PointerProperty(
         type=CustomProperties)
     bpy.utils.register_class(MessageBox)
-    bpy.utils.register_class(OBJECT_OT_add_cube)
-    bpy.utils.register_class(OBJECT_OT_undo_last)
     bpy.utils.register_class(OBJECT_OT_move_to_zero)
+    bpy.utils.register_class(OBJECT_OT_reset_origin_and_move_to_zero)
     bpy.utils.register_class(ThinningObject)
     bpy.utils.register_class(SimpleAddonPanel)
     bpy.utils.register_class(CreateObjectsProjectionToZ)
@@ -180,9 +177,8 @@ def register():
 
 def unregister():
     bpy.utils.unregister_class(MessageBox)
-    bpy.utils.unregister_class(OBJECT_OT_add_cube)
-    bpy.utils.unregister_class(OBJECT_OT_undo_last)
     bpy.utils.unregister_class(OBJECT_OT_move_to_zero)
+    bpy.utils.unregister_class(OBJECT_OT_reset_origin_and_move_to_zero)
     bpy.utils.unregister_class(ThinningObject)
     bpy.utils.unregister_class(SimpleAddonPanel)
     del bpy.types.Scene.custom_props
