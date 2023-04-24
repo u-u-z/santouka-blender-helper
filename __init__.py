@@ -1,6 +1,7 @@
 import bpy
 import bmesh
 from mathutils import Vector, Matrix
+import object_print3d_utils as print3d_utils
 
 
 bl_info = {
@@ -165,10 +166,11 @@ class SantoukaToolBoxPanel(bpy.types.Panel):
         col.operator("object.thinning_object")
 
 
-def register():
+def register(print3d_utils=True):
     bpy.utils.register_class(CustomProperties)
     bpy.types.Scene.custom_props = bpy.props.PointerProperty(
         type=CustomProperties)
+
     bpy.utils.register_class(MessageBox)
     bpy.utils.register_class(OBJECT_OT_move_to_zero)
     bpy.utils.register_class(OBJECT_OT_reset_origin_and_move_to_zero)
@@ -176,8 +178,13 @@ def register():
     bpy.utils.register_class(SantoukaToolBoxPanel)
     bpy.utils.register_class(CreateObjectsProjectionToZZero)
 
+    # 3D-printing utils
+    if print3d_utils:
+        print3d_utils.register()
+
 
 def unregister():
+    register(False)  # TODO: need fix dependency for classess
     bpy.utils.unregister_class(MessageBox)
     bpy.utils.unregister_class(OBJECT_OT_move_to_zero)
     bpy.utils.unregister_class(OBJECT_OT_reset_origin_and_move_to_zero)
@@ -187,7 +194,10 @@ def unregister():
     bpy.utils.unregister_class(CustomProperties)
     bpy.utils.unregister_class(CreateObjectsProjectionToZZero)
 
+    # 3D-printing utils
+    print3d_utils.unregister()
+
 
 if __name__ == "__main__":
-    register()
-    # unregister() #for
+    # register()
+    unregister()
