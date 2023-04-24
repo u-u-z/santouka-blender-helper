@@ -109,9 +109,9 @@ class ThinningObject(bpy.types.Operator):
         return {'FINISHED'}
 
 
-class CreateObjectsProjectionToZ(bpy.types.Operator):
+class CreateObjectsProjectionToZZero(bpy.types.Operator):
     bl_idname = "object.create_object_projection"
-    bl_label = "创建（z轴）投影"
+    bl_label = "创建（z轴=0）XY面投影"
 
     def execute(self, context):
         selected_objects = context.selected_objects
@@ -174,7 +174,7 @@ def register():
     bpy.utils.register_class(OBJECT_OT_reset_origin_and_move_to_zero)
     bpy.utils.register_class(ThinningObject)
     bpy.utils.register_class(SantoukaToolBoxPanel)
-    bpy.utils.register_class(CreateObjectsProjectionToZ)
+    bpy.utils.register_class(CreateObjectsProjectionToZZero)
 
 
 def unregister():
@@ -185,7 +185,7 @@ def unregister():
     bpy.utils.unregister_class(SantoukaToolBoxPanel)
     del bpy.types.Scene.custom_props
     bpy.utils.unregister_class(CustomProperties)
-    bpy.utils.unregister_class(CreateObjectsProjectionToZ)
+    bpy.utils.unregister_class(CreateObjectsProjectionToZZero)
 
 
 if __name__ == "__main__":
