@@ -152,12 +152,14 @@ class SimpleAddonPanel(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
         col = layout.column()
-        col.label(text="移动对象（请选择对象）", icon='WORLD_DATA')
+        col.label(text="移动对象（请选择对象）", icon='OBJECT_DATA')
         col.operator("object.reset_origin_and_move_to_zero")
         col.operator("object.move_to_zero")
-        col.label(text="投影", icon='WORLD_DATA')
+
+        col.label(text="投影", icon='LIGHT')
         col.operator("object.create_object_projection")
-        col.label(text="减薄/增厚(正增负减)", icon='WORLD_DATA')
+
+        col.label(text="减薄/增厚(正增负减)", icon='HOLDOUT_OFF')
         custom_props = context.scene.custom_props
         col.prop(custom_props, "thinning_float")
         col.operator("object.thinning_object")
