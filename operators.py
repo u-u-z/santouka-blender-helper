@@ -65,7 +65,7 @@ def get_unit(unit_system: str, unit: str) -> tuple[float, str]:
 
 class MESH_OT_print3d_stk_info_volume(Operator):
     bl_idname = "mesh.print3d_stk_info_volume"
-    bl_label = "3D-Print Info Volume"
+    bl_label = "3D-Print-STK Info Volume"
     bl_description = "Report the volume of the active mesh"
 
     def execute(self, context):
@@ -96,7 +96,7 @@ class MESH_OT_print3d_stk_info_volume(Operator):
 
 class MESH_OT_print3d_stk_info_area(Operator):
     bl_idname = "mesh.print3d_stk_info_area"
-    bl_label = "3D-Print Info Area"
+    bl_label = "3D-Print-STK Info Area"
     bl_description = "Report the surface area of the active mesh"
 
     def execute(self, context):
@@ -148,7 +148,7 @@ def multiple_obj_warning(self, context):
 
 class MESH_OT_print3d_stk_check_solid(Operator):
     bl_idname = "mesh.print3d_stk_check_solid"
-    bl_label = "3D-Print Check Solid"
+    bl_label = "3D-Print-STK Check Solid"
     bl_description = "Check for geometry is solid (has valid inside/outside) and correct normals"
 
     @staticmethod
@@ -183,7 +183,7 @@ class MESH_OT_print3d_stk_check_solid(Operator):
 
 class MESH_OT_print3d_stk_check_intersections(Operator):
     bl_idname = "mesh.print3d_stk_check_intersect"
-    bl_label = "3D-Print Check Intersections"
+    bl_label = "3D-Print-STK Check Intersections"
     bl_description = "Check geometry for self intersections"
 
     @staticmethod
@@ -200,7 +200,7 @@ class MESH_OT_print3d_stk_check_intersections(Operator):
 
 class MESH_OT_print3d_stk_check_degenerate(Operator):
     bl_idname = "mesh.print3d_stk_check_degenerate"
-    bl_label = "3D-Print Check Degenerate"
+    bl_label = "3D-Print-STK Check Degenerate"
     bl_description = (
         "Check for degenerate geometry that may not print properly "
         "(zero area faces, zero length edges)"
@@ -236,7 +236,7 @@ class MESH_OT_print3d_stk_check_degenerate(Operator):
 
 class MESH_OT_print3d_stk_check_distorted(Operator):
     bl_idname = "mesh.print3d_stk_check_distort"
-    bl_label = "3D-Print Check Distorted Faces"
+    bl_label = "3D-Print-STK Check Distorted Faces"
     bl_description = "Check for non-flat faces"
 
     @staticmethod
@@ -269,7 +269,7 @@ class MESH_OT_print3d_stk_check_distorted(Operator):
 
 class MESH_OT_print3d_stk_check_thick(Operator):
     bl_idname = "mesh.print3d_stk_check_thick"
-    bl_label = "3D-Print Check Thickness"
+    bl_label = "3D-Print-STK Check Thickness"
     bl_description = (
         "Check geometry is above the minimum thickness preference "
         "(relies on correct normals)"
@@ -293,7 +293,7 @@ class MESH_OT_print3d_stk_check_thick(Operator):
 
 class MESH_OT_print3d_stk_check_sharp(Operator):
     bl_idname = "mesh.print3d_stk_check_sharp"
-    bl_label = "3D-Print Check Sharp"
+    bl_label = "3D-Print-STK Check Sharp"
     bl_description = "Check edges are below the sharpness preference"
 
     @staticmethod
@@ -323,7 +323,7 @@ class MESH_OT_print3d_stk_check_sharp(Operator):
 
 class MESH_OT_print3d_stk_check_overhang(Operator):
     bl_idname = "mesh.print3d_stk_check_overhang"
-    bl_label = "3D-Print Check Overhang"
+    bl_label = "3D-Print-STK Check Overhang"
     bl_description = "Check faces don't overhang past a certain angle"
 
     @staticmethod
@@ -362,7 +362,7 @@ class MESH_OT_print3d_stk_check_overhang(Operator):
 
 class MESH_OT_print3d_stk_check_all(Operator):
     bl_idname = "mesh.print3d_stk_check_all"
-    bl_label = "3D-Print Check All"
+    bl_label = "3D-Print-STK Check All"
     bl_description = "Run all checks"
 
     check_cls = (
@@ -391,7 +391,7 @@ class MESH_OT_print3d_stk_check_all(Operator):
 
 class MESH_OT_print3d_stk_clean_distorted(Operator):
     bl_idname = "mesh.print3d_stk_clean_distorted"
-    bl_label = "3D-Print Clean Distorted"
+    bl_label = "3D-Print-STK Clean Distorted"
     bl_description = "Tessellate distorted faces"
     bl_options = {'REGISTER', 'UNDO'}
 
@@ -431,7 +431,7 @@ class MESH_OT_print3d_stk_clean_distorted(Operator):
 
 class MESH_OT_print3d_stk_clean_non_manifold(Operator):
     bl_idname = "mesh.print3d_stk_clean_non_manifold"
-    bl_label = "3D-Print Clean Non-Manifold"
+    bl_label = "3D-Print-STK Clean Non-Manifold"
     bl_description = "Cleanup problems, like holes, non-manifold vertices and inverted normals"
     bl_options = {'REGISTER', 'UNDO'}
 
@@ -582,7 +582,7 @@ class MESH_OT_print3d_stk_clean_non_manifold(Operator):
 
 class MESH_OT_print3d_stk_clean_thin(Operator):
     bl_idname = "mesh.print3d_stk_clean_thin"
-    bl_label = "3D-Print Clean Thin"
+    bl_label = "3D-Print-STK Clean Thin"
     bl_description = "Ensure minimum thickness"
     bl_options = {'REGISTER', 'UNDO'}
 
@@ -598,7 +598,7 @@ class MESH_OT_print3d_stk_clean_thin(Operator):
 
 class MESH_OT_print3d_stk_select_report(Operator):
     bl_idname = "mesh.print3d_stk_select_report"
-    bl_label = "3D-Print Select Report"
+    bl_label = "3D-Print-STK Select Report"
     bl_description = "Select the data associated with this report"
     bl_options = {'INTERNAL'}
 
@@ -838,8 +838,8 @@ class MESH_OT_print3d_stk_align_to_xy(Operator):
 
 class MESH_OT_print3d_stk_export(Operator):
     bl_idname = "mesh.print3d_stk_export"
-    bl_label = "3D-Print Export"
-    bl_description = "Export selected objects using 3D-Print settings"
+    bl_label = "3D-Print-STK Export"
+    bl_description = "Export selected objects using 3D-Print-STK settings"
 
     def execute(self, context):
         from . import export

@@ -21,7 +21,9 @@ class View3DPrintPanelSTK:
 
 
 class VIEW3D_PT_print3d_stk_analyze(View3DPrintPanelSTK, Panel):
-    bl_label = "Analyze"
+    bl_idname = "VIEW3D_PT_print3d_stk_analyze"
+    bl_category = "山头火工具箱：3D打印"
+    bl_label = "分析"
 
     _type_to_icon = {
         bmesh.types.BMVert: 'VERTEXSEL',
@@ -85,7 +87,7 @@ class VIEW3D_PT_print3d_stk_analyze(View3DPrintPanelSTK, Panel):
 
 
 class VIEW3D_PT_print3d_stk_cleanup(View3DPrintPanelSTK, Panel):
-    bl_label = "Clean Up"
+    bl_label = "清理"
     bl_options = {"DEFAULT_CLOSED"}
 
     def draw(self, context):
@@ -103,7 +105,7 @@ class VIEW3D_PT_print3d_stk_cleanup(View3DPrintPanelSTK, Panel):
 
 
 class VIEW3D_PT_print3d_stk_transform(View3DPrintPanelSTK, Panel):
-    bl_label = "Transform"
+    bl_label = "转换"
     bl_options = {"DEFAULT_CLOSED"}
 
     def draw(self, context):
@@ -121,7 +123,7 @@ class VIEW3D_PT_print3d_stk_transform(View3DPrintPanelSTK, Panel):
 
 
 class VIEW3D_PT_print3d_stk_export(View3DPrintPanelSTK, Panel):
-    bl_label = "Export"
+    bl_label = "导出"
     bl_options = {"DEFAULT_CLOSED"}
 
     def draw(self, context):
@@ -142,4 +144,4 @@ class VIEW3D_PT_print3d_stk_export(View3DPrintPanelSTK, Panel):
         sub.prop(print_3d, "use_data_layers")
 
         layout.operator("mesh.print3d_stk_export",
-                        text="Export", icon='EXPORT')
+                        text="导出", icon='EXPORT')

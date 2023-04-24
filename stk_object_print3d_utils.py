@@ -1,40 +1,19 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-bl_info = {
-    "name": "3D打印工具箱",
-    "author": "Campbell Barton",
-    "blender": (3, 0, 0),
-    "location": "3D View > Sidebar",
-    "description": "Utilities for 3D printing",
-    "category": "Mesh",
-}
-
-
-if "bpy" in locals():
-    import importlib
-    importlib.reload(ui)
-    importlib.reload(operators)
-    if "mesh_helpers" in locals():
-        importlib.reload(mesh_helpers)
-    if "export" in locals():
-        importlib.reload(export)
-else:
-    import math
-
-    import bpy
-    from bpy.types import PropertyGroup
-    from bpy.props import (
-        StringProperty,
-        BoolProperty,
-        FloatProperty,
-        EnumProperty,
-        PointerProperty,
-    )
-
-    from . import (
-        ui,
-        operators,
-    )
+from . import (
+    ui,
+    operators,
+)
+from bpy.props import (
+    StringProperty,
+    BoolProperty,
+    FloatProperty,
+    EnumProperty,
+    PointerProperty,
+)
+from bpy.types import PropertyGroup
+import bpy
+import math
 
 
 class SceneProperties(PropertyGroup):
@@ -148,14 +127,14 @@ classes = (
 )
 
 
-def register():
+def in_side_addon_register():
     for cls in classes:
         bpy.utils.register_class(cls)
 
     bpy.types.Scene.print_3d = PointerProperty(type=SceneProperties)
 
 
-def unregister():
+def in_side_addon_unregister():
     for cls in classes:
         bpy.utils.unregister_class(cls)
 

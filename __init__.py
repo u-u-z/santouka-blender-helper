@@ -1,12 +1,10 @@
-import bpy
-import bmesh
+from . import stk_object_print3d_utils
 from mathutils import Vector, Matrix
-import object_print3d_utils as print3d_utils
-
-
+import bmesh
+import bpy
 bl_info = {
-    "name": "山头火工具箱",
-    "blender": (3, 3, 1),
+    "name": "Santouka Tools",
+    "blender": (3, 5, 0),
     "category": "Object",
 }
 
@@ -166,7 +164,7 @@ class SantoukaToolBoxPanel(bpy.types.Panel):
         col.operator("object.thinning_object")
 
 
-def register(enable_print3d_utils=True):
+def register():
     bpy.utils.register_class(CustomProperties)
     bpy.types.Scene.custom_props = bpy.props.PointerProperty(
         type=CustomProperties)
@@ -179,12 +177,23 @@ def register(enable_print3d_utils=True):
     bpy.utils.register_class(CreateObjectsProjectionToZZero)
 
     # 3D-printing utils
-    if enable_print3d_utils:
-        print3d_utils.register()
+    stk_object_print3d_utils.in_side_addon_register()
 
 
 def unregister():
-    register(False)  # TODO: need fix dependency for classess
+    bpy.utils.register_class(CustomProperties)
+    bpy.types.Scene.custom_props = bpy.props.PointerProperty(
+        type=CustomProperties)
+
+    bpy.utils.register_class(MessageBox)
+    bpy.utils.register_class(OBJECT_OT_move_to_zero)
+    bpy.utils.register_class(OBJECT_OT_reset_origin_and_move_to_zero)
+    bpy.utils.register_class(ThinningObject)
+    bpy.utils.register_class(SantoukaToolBoxPanel)
+    bpy.utils.register_class(CreateObjectsProjectionToZZero)
+
+    # TODO: need fix dependency for classess
+
     bpy.utils.unregister_class(MessageBox)
     bpy.utils.unregister_class(OBJECT_OT_move_to_zero)
     bpy.utils.unregister_class(OBJECT_OT_reset_origin_and_move_to_zero)
@@ -195,9 +204,9 @@ def unregister():
     bpy.utils.unregister_class(CreateObjectsProjectionToZZero)
 
     # 3D-printing utils
-    print3d_utils.unregister()
+    stk_object_print3d_utils.in_side_addon_unregister()
 
 
-if __name__ == "__main__":
-    # register()
-    unregister()
+# if __name__ == "__main__":
+#     register()
+#     # unregister()
