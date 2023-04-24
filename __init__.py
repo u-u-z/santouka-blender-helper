@@ -166,7 +166,7 @@ class SantoukaToolBoxPanel(bpy.types.Panel):
         col.operator("object.thinning_object")
 
 
-def register(print3d_utils=True):
+def register(enable_print3d_utils=True):
     bpy.utils.register_class(CustomProperties)
     bpy.types.Scene.custom_props = bpy.props.PointerProperty(
         type=CustomProperties)
@@ -179,7 +179,7 @@ def register(print3d_utils=True):
     bpy.utils.register_class(CreateObjectsProjectionToZZero)
 
     # 3D-printing utils
-    if print3d_utils:
+    if enable_print3d_utils:
         print3d_utils.register()
 
 
