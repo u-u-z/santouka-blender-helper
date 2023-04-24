@@ -140,7 +140,7 @@ class CreateObjectsProjectionToZ(bpy.types.Operator):
                 bm.free()
 
 
-class SimpleAddonPanel(bpy.types.Panel):
+class SantoukaToolBoxPanel(bpy.types.Panel):
     bl_label = "山头火工具箱"
     bl_idname = "OBJECT_PT_simple_addon"
     bl_category = "山头火工具箱"
@@ -173,7 +173,7 @@ def register():
     bpy.utils.register_class(OBJECT_OT_move_to_zero)
     bpy.utils.register_class(OBJECT_OT_reset_origin_and_move_to_zero)
     bpy.utils.register_class(ThinningObject)
-    bpy.utils.register_class(SimpleAddonPanel)
+    bpy.utils.register_class(SantoukaToolBoxPanel)
     bpy.utils.register_class(CreateObjectsProjectionToZ)
 
 
@@ -182,7 +182,7 @@ def unregister():
     bpy.utils.unregister_class(OBJECT_OT_move_to_zero)
     bpy.utils.unregister_class(OBJECT_OT_reset_origin_and_move_to_zero)
     bpy.utils.unregister_class(ThinningObject)
-    bpy.utils.unregister_class(SimpleAddonPanel)
+    bpy.utils.unregister_class(SantoukaToolBoxPanel)
     del bpy.types.Scene.custom_props
     bpy.utils.unregister_class(CustomProperties)
     bpy.utils.unregister_class(CreateObjectsProjectionToZ)
