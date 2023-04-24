@@ -9,8 +9,8 @@ import bmesh
 from . import report
 
 
-class View3DPrintPanel:
-    bl_category = "3D-Print"
+class View3DPrintPanelSTK:
+    bl_category = "山头火工具箱：3D打印"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
 
@@ -20,7 +20,7 @@ class View3DPrintPanel:
         return obj is not None and obj.type == 'MESH' and obj.mode in {'OBJECT', 'EDIT'}
 
 
-class VIEW3D_PT_print3d_analyze(View3DPrintPanel, Panel):
+class VIEW3D_PT_print3d_stk_analyze(View3DPrintPanelSTK, Panel):
     bl_label = "Analyze"
 
     _type_to_icon = {
@@ -43,7 +43,8 @@ class VIEW3D_PT_print3d_analyze(View3DPrintPanel, Panel):
             for i, (text, data) in enumerate(info):
                 if is_edit and data and data[1]:
                     bm_type, _bm_array = data
-                    col.operator("mesh.print3d_select_report", text=text, icon=self._type_to_icon[bm_type],).index = i
+                    col.operator("mesh.print3d_stk_select_report", text=text,
+                                 icon=self._type_to_icon[bm_type],).index = i
                 else:
                     col.label(text=text)
 
@@ -56,34 +57,34 @@ class VIEW3D_PT_print3d_analyze(View3DPrintPanel, Panel):
 
         layout.label(text="Statistics")
         row = layout.row(align=True)
-        row.operator("mesh.print3d_info_volume", text="Volume")
-        row.operator("mesh.print3d_info_area", text="Area")
+        row.operator("mesh.print3d_stk_info_volume", text="Volume")
+        row.operator("mesh.print3d_stk_info_area", text="Area")
 
         layout.label(text="Checks")
         col = layout.column(align=True)
-        col.operator("mesh.print3d_check_solid", text="Solid")
-        col.operator("mesh.print3d_check_intersect", text="Intersections")
+        col.operator("mesh.print3d_stk_check_solid", text="Solid")
+        col.operator("mesh.print3d_stk_check_intersect", text="Intersections")
         row = col.row(align=True)
-        row.operator("mesh.print3d_check_degenerate", text="Degenerate")
+        row.operator("mesh.print3d_stk_check_degenerate", text="Degenerate")
         row.prop(print_3d, "threshold_zero", text="")
         row = col.row(align=True)
-        row.operator("mesh.print3d_check_distort", text="Distorted")
+        row.operator("mesh.print3d_stk_check_distort", text="Distorted")
         row.prop(print_3d, "angle_distort", text="")
         row = col.row(align=True)
-        row.operator("mesh.print3d_check_thick", text="Thickness")
+        row.operator("mesh.print3d_stk_check_thick", text="Thickness")
         row.prop(print_3d, "thickness_min", text="")
         row = col.row(align=True)
-        row.operator("mesh.print3d_check_sharp", text="Edge Sharp")
+        row.operator("mesh.print3d_stk_check_sharp", text="Edge Sharp")
         row.prop(print_3d, "angle_sharp", text="")
         row = col.row(align=True)
-        row.operator("mesh.print3d_check_overhang", text="Overhang")
+        row.operator("mesh.print3d_stk_check_overhang", text="Overhang")
         row.prop(print_3d, "angle_overhang", text="")
-        layout.operator("mesh.print3d_check_all", text="Check All")
+        layout.operator("mesh.print3d_stk_check_all", text="Check All")
 
         self.draw_report(context)
 
 
-class VIEW3D_PT_print3d_cleanup(View3DPrintPanel, Panel):
+class VIEW3D_PT_print3d_stk_cleanup(View3DPrintPanelSTK, Panel):
     bl_label = "Clean Up"
     bl_options = {"DEFAULT_CLOSED"}
 
@@ -93,14 +94,15 @@ class VIEW3D_PT_print3d_cleanup(View3DPrintPanel, Panel):
         print_3d = context.scene.print_3d
 
         row = layout.row(align=True)
-        row.operator("mesh.print3d_clean_distorted", text="Distorted")
+        row.operator("mesh.print3d_stk_clean_distorted", text="Distorted")
         row.prop(print_3d, "angle_distort", text="")
-        layout.operator("mesh.print3d_clean_non_manifold", text="Make Manifold")
+        layout.operator("mesh.print3d_stk_clean_non_manifold",
+                        text="Make Manifold")
         # XXX TODO
-        # layout.operator("mesh.print3d_clean_thin", text="Wall Thickness")
+        # layout.operator("mesh.print3d_stk_clean_thin", text="Wall Thickness")
 
 
-class VIEW3D_PT_print3d_transform(View3DPrintPanel, Panel):
+class VIEW3D_PT_print3d_stk_transform(View3DPrintPanelSTK, Panel):
     bl_label = "Transform"
     bl_options = {"DEFAULT_CLOSED"}
 
@@ -111,14 +113,14 @@ class VIEW3D_PT_print3d_transform(View3DPrintPanel, Panel):
 
         layout.label(text="Scale To")
         row = layout.row(align=True)
-        row.operator("mesh.print3d_scale_to_volume", text="Volume")
-        row.operator("mesh.print3d_scale_to_bounds", text="Bounds")
+        row.operator("mesh.print3d_stk_scale_to_volume", text="Volume")
+        row.operator("mesh.print3d_stk_scale_to_bounds", text="Bounds")
         row = layout.row(align=True)
-        row.operator("mesh.print3d_align_to_xy", text="Align XY")
+        row.operator("mesh.print3d_stk_align_to_xy", text="Align XY")
         row.prop(print_3d, "use_alignxy_face_area")
 
 
-class VIEW3D_PT_print3d_export(View3DPrintPanel, Panel):
+class VIEW3D_PT_print3d_stk_export(View3DPrintPanelSTK, Panel):
     bl_label = "Export"
     bl_options = {"DEFAULT_CLOSED"}
 
@@ -139,4 +141,5 @@ class VIEW3D_PT_print3d_export(View3DPrintPanel, Panel):
         sub.active = print_3d.export_format != "STL"
         sub.prop(print_3d, "use_data_layers")
 
-        layout.operator("mesh.print3d_export", text="Export", icon='EXPORT')
+        layout.operator("mesh.print3d_stk_export",
+                        text="Export", icon='EXPORT')

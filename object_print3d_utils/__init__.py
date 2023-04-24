@@ -1,13 +1,11 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 bl_info = {
-    "name": "3D-Print Toolbox",
+    "name": "3D打印工具箱",
     "author": "Campbell Barton",
     "blender": (3, 0, 0),
     "location": "3D View > Sidebar",
     "description": "Utilities for 3D printing",
-    "doc_url": "{BLENDER_MANUAL_URL}/addons/mesh/3d_print_toolbox.html",
-    "support": 'OFFICIAL',
     "category": "Mesh",
 }
 
@@ -124,29 +122,29 @@ class SceneProperties(PropertyGroup):
 classes = (
     SceneProperties,
 
-    ui.VIEW3D_PT_print3d_analyze,
-    ui.VIEW3D_PT_print3d_cleanup,
-    ui.VIEW3D_PT_print3d_transform,
-    ui.VIEW3D_PT_print3d_export,
+    ui.VIEW3D_PT_print3d_stk_analyze,
+    ui.VIEW3D_PT_print3d_stk_cleanup,
+    ui.VIEW3D_PT_print3d_stk_transform,
+    ui.VIEW3D_PT_print3d_stk_export,
 
-    operators.MESH_OT_print3d_info_volume,
-    operators.MESH_OT_print3d_info_area,
-    operators.MESH_OT_print3d_check_degenerate,
-    operators.MESH_OT_print3d_check_distorted,
-    operators.MESH_OT_print3d_check_solid,
-    operators.MESH_OT_print3d_check_intersections,
-    operators.MESH_OT_print3d_check_thick,
-    operators.MESH_OT_print3d_check_sharp,
-    operators.MESH_OT_print3d_check_overhang,
-    operators.MESH_OT_print3d_check_all,
-    operators.MESH_OT_print3d_clean_distorted,
-    # operators.MESH_OT_print3d_clean_thin,
-    operators.MESH_OT_print3d_clean_non_manifold,
-    operators.MESH_OT_print3d_select_report,
-    operators.MESH_OT_print3d_scale_to_volume,
-    operators.MESH_OT_print3d_scale_to_bounds,
-    operators.MESH_OT_print3d_align_to_xy,
-    operators.MESH_OT_print3d_export,
+    operators.MESH_OT_print3d_stk_info_volume,
+    operators.MESH_OT_print3d_stk_info_area,
+    operators.MESH_OT_print3d_stk_check_degenerate,
+    operators.MESH_OT_print3d_stk_check_distorted,
+    operators.MESH_OT_print3d_stk_check_solid,
+    operators.MESH_OT_print3d_stk_check_intersections,
+    operators.MESH_OT_print3d_stk_check_thick,
+    operators.MESH_OT_print3d_stk_check_sharp,
+    operators.MESH_OT_print3d_stk_check_overhang,
+    operators.MESH_OT_print3d_stk_check_all,
+    operators.MESH_OT_print3d_stk_clean_distorted,
+    # operators.MESH_OT_print3d_stk_clean_thin,
+    operators.MESH_OT_print3d_stk_clean_non_manifold,
+    operators.MESH_OT_print3d_stk_select_report,
+    operators.MESH_OT_print3d_stk_scale_to_volume,
+    operators.MESH_OT_print3d_stk_scale_to_bounds,
+    operators.MESH_OT_print3d_stk_align_to_xy,
+    operators.MESH_OT_print3d_stk_export,
 )
 
 

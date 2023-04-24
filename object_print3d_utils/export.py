@@ -64,7 +64,8 @@ def write_mesh(context, report_cb):
     print_3d = scene.print_3d
 
     export_format = print_3d.export_format
-    global_scale = unit.scale_length if (unit.system != 'NONE' and print_3d.use_apply_scale) else 1.0
+    global_scale = unit.scale_length if (
+        unit.system != 'NONE' and print_3d.use_apply_scale) else 1.0
     path_mode = 'COPY' if print_3d.use_export_texture else 'AUTO'
     export_path = bpy.path.abspath(print_3d.export_path)
     obj = layer.objects.active
