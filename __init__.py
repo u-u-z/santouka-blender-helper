@@ -37,45 +37,43 @@ def show_message_box(message):
     bpy.ops.message.message_box('INVOKE_DEFAULT', message=message)
 
 
-class OBJECT_OT_add_cube(bpy.types.Operator):
-    bl_idname = "object.add_cube"
-    bl_label = "增加方体"
-    bl_options = {'REGISTER', 'UNDO'}
-
-    def execute(self, context):
-        # self.report({'INFO'}, "Added a cube! ")
-        show_message_box("Added a cube! ")
-        bpy.ops.mesh.primitive_cube_add()
-        return {'FINISHED'}
-
-
 class OBJECT_OT_move_to_zero(bpy.types.Operator):
     bl_idname = "object.move_to_zero"
-    bl_label = "移动原点"
+    bl_label = "至原点"
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
+        self.report({'INFO'}, "移动了 {selected_num} 个对象".format(
+            selected_num=len(context.selected_objects))
+        )
         if len(context.selected_objects) == 0:
-            show_message_box("没有选择任何对象")
+            show_message_box("未选择任何对象，请先选择对象")
             return {'FINISHED'}
         else:
             for obj in context.selected_objects:
-                # first active (select) this object
+                obj.location = (0, 0, 0)
+            return {'FINISHED'}
+
+
+class OBJECT_OT_reset_origin_and_move_to_zero(bpy.types.Operator):
+    bl_idname = "object.reset_origin_and_move_to_zero"
+    bl_label = "至原点,并重置原点"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        self.report({'INFO'}, "移动了 {selected_num} 个对象".format(
+            selected_num=len(context.selected_objects))
+        )
+        if len(context.selected_objects) == 0:
+            show_message_box("未选择任何对象，请先选择对象")
+            return {'FINISHED'}
+        else:
+            for obj in context.selected_objects:
                 bpy.context.view_layer.objects.active = obj
                 bpy.ops.object.origin_set(
                     type='ORIGIN_GEOMETRY', center='BOUNDS')
                 obj.location = (0, 0, 0)
-                return {'FINISHED'}
-
-
-class OBJECT_OT_undo_last(bpy.types.Operator):
-    bl_idname = "object.undo_last"
-    bl_label = "Undo Lasts"
-    bl_options = {'REGISTER', 'UNDO'}
-
-    def execute(self, context):
-        bpy.ops.ed.undo()
-        return {'FINISHED'}
+            return {'FINISHED'}
 
 
 class ThinningObject(bpy.types.Operator):
