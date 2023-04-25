@@ -850,3 +850,19 @@ class MESH_OT_print3d_stk_export(Operator):
             return {'FINISHED'}
 
         return {'CANCELLED'}
+
+
+def create_plane_for_shrinkwrap(new_obj_name, x, y):
+    bpy.ops.mesh.primitive_plane_add(
+        size=1, enter_editmode=False, align='WORLD', location=(0, 0, 0))
+    plane = bpy.context.active_object
+    plane.name = f"{new_obj_name}_plane_for_shrinkwrap"
+    plane.scale.x = x + (x * 0.1)
+    plane.scale.y = y + (y * 0.1)
+
+    bpy.ops.object.select_all(action='DESELECT')
+    plane.select_set(True)
+    bpy.context.view_layer.objects.active = plane
+    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+
+    return plane
