@@ -18,13 +18,13 @@ import math
 
 class SceneProperties(PropertyGroup):
     use_alignxy_face_area: BoolProperty(
-        name="Face Areas",
+        name="面的面积",
         description="Normalize normals proportional to face areas",
         default=False,
     )
 
     export_format: EnumProperty(
-        name="Format",
+        name="格式",
         description="Format type to export to",
         items=(
             ('OBJ', "OBJ", ""),
@@ -35,31 +35,31 @@ class SceneProperties(PropertyGroup):
         default='STL',
     )
     use_export_texture: BoolProperty(
-        name="Copy Textures",
+        name="复制纹理",
         description="Copy textures on export to the output path",
         default=False,
     )
     use_apply_scale: BoolProperty(
-        name="Apply Scale",
+        name="应用缩放",
         description="Apply scene scale setting on export",
         default=False,
     )
     use_data_layers: BoolProperty(
-        name="Data Layers",
+        name="数据层",
         description=(
             "Export normals, UVs, vertex colors and materials for formats that support it "
             "significantly increasing file size"
         ),
     )
     export_path: StringProperty(
-        name="Export Directory",
+        name="导出目录",
         description="Path to directory where the files are created",
         default="//",
         maxlen=1024,
         subtype="DIR_PATH",
     )
     thickness_min: FloatProperty(
-        name="Thickness",
+        name="最小厚度",
         description="Minimum thickness",
         subtype='DISTANCE',
         default=0.001,  # 1mm
@@ -67,7 +67,7 @@ class SceneProperties(PropertyGroup):
         max=10.0,
     )
     threshold_zero: FloatProperty(
-        name="Threshold",
+        name="阈值",
         description="Limit for checking zero area/length",
         default=0.0001,
         precision=5,
@@ -75,7 +75,7 @@ class SceneProperties(PropertyGroup):
         max=0.2,
     )
     angle_distort: FloatProperty(
-        name="Angle",
+        name="角度-失真",
         description="Limit for checking distorted faces",
         subtype='ANGLE',
         default=math.radians(45.0),
@@ -83,14 +83,14 @@ class SceneProperties(PropertyGroup):
         max=math.radians(180.0),
     )
     angle_sharp: FloatProperty(
-        name="Angle",
+        name="角度-锐利",
         subtype='ANGLE',
         default=math.radians(160.0),
         min=0.0,
         max=math.radians(180.0),
     )
     angle_overhang: FloatProperty(
-        name="Angle",
+        name="角度-悬空",
         subtype='ANGLE',
         default=math.radians(45.0),
         min=0.0,

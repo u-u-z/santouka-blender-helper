@@ -38,7 +38,7 @@ class VIEW3D_PT_print3d_stk_analyze(View3DPrintPanelSTK, Panel):
         if info:
             is_edit = context.edit_object is not None
 
-            layout.label(text="Result")
+            layout.label(text="结果/报告")
             box = layout.box()
             col = box.column()
 
@@ -57,31 +57,31 @@ class VIEW3D_PT_print3d_stk_analyze(View3DPrintPanelSTK, Panel):
 
         # TODO, presets
 
-        layout.label(text="Statistics")
+        layout.label(text="统计")
         row = layout.row(align=True)
-        row.operator("mesh.print3d_stk_info_volume", text="Volume")
-        row.operator("mesh.print3d_stk_info_area", text="Area")
+        row.operator("mesh.print3d_stk_info_volume", text="体积")
+        row.operator("mesh.print3d_stk_info_area", text="面积")
 
-        layout.label(text="Checks")
+        layout.label(text="检查")
         col = layout.column(align=True)
-        col.operator("mesh.print3d_stk_check_solid", text="Solid")
-        col.operator("mesh.print3d_stk_check_intersect", text="Intersections")
+        col.operator("mesh.print3d_stk_check_solid", text="实体")
+        col.operator("mesh.print3d_stk_check_intersect", text="交叉")
         row = col.row(align=True)
-        row.operator("mesh.print3d_stk_check_degenerate", text="Degenerate")
+        row.operator("mesh.print3d_stk_check_degenerate", text="逆生成/损坏")
         row.prop(print_3d, "threshold_zero", text="")
         row = col.row(align=True)
-        row.operator("mesh.print3d_stk_check_distort", text="Distorted")
+        row.operator("mesh.print3d_stk_check_distort", text="扭曲/失真")
         row.prop(print_3d, "angle_distort", text="")
         row = col.row(align=True)
-        row.operator("mesh.print3d_stk_check_thick", text="Thickness")
+        row.operator("mesh.print3d_stk_check_thick", text="厚度")
         row.prop(print_3d, "thickness_min", text="")
         row = col.row(align=True)
-        row.operator("mesh.print3d_stk_check_sharp", text="Edge Sharp")
+        row.operator("mesh.print3d_stk_check_sharp", text="边缘锋利/尖锐")
         row.prop(print_3d, "angle_sharp", text="")
         row = col.row(align=True)
-        row.operator("mesh.print3d_stk_check_overhang", text="Overhang")
+        row.operator("mesh.print3d_stk_check_overhang", text="外悬")
         row.prop(print_3d, "angle_overhang", text="")
-        layout.operator("mesh.print3d_stk_check_all", text="Check All")
+        layout.operator("mesh.print3d_stk_check_all", text="检查所有")
 
         self.draw_report(context)
 
@@ -96,16 +96,16 @@ class VIEW3D_PT_print3d_stk_cleanup(View3DPrintPanelSTK, Panel):
         print_3d = context.scene.print_3d
 
         row = layout.row(align=True)
-        row.operator("mesh.print3d_stk_clean_distorted", text="Distorted")
+        row.operator("mesh.print3d_stk_clean_distorted", text="扭曲/失真")
         row.prop(print_3d, "angle_distort", text="")
         layout.operator("mesh.print3d_stk_clean_non_manifold",
-                        text="Make Manifold")
+                        text="创建 Manifold")
         # XXX TODO
         # layout.operator("mesh.print3d_stk_clean_thin", text="Wall Thickness")
 
 
 class VIEW3D_PT_print3d_stk_transform(View3DPrintPanelSTK, Panel):
-    bl_label = "转换"
+    bl_label = "变换"
     bl_options = {"DEFAULT_CLOSED"}
 
     def draw(self, context):
@@ -115,10 +115,10 @@ class VIEW3D_PT_print3d_stk_transform(View3DPrintPanelSTK, Panel):
 
         layout.label(text="Scale To")
         row = layout.row(align=True)
-        row.operator("mesh.print3d_stk_scale_to_volume", text="Volume")
-        row.operator("mesh.print3d_stk_scale_to_bounds", text="Bounds")
+        row.operator("mesh.print3d_stk_scale_to_volume", text="体积")
+        row.operator("mesh.print3d_stk_scale_to_bounds", text="边界")
         row = layout.row(align=True)
-        row.operator("mesh.print3d_stk_align_to_xy", text="Align XY")
+        row.operator("mesh.print3d_stk_align_to_xy", text="对齐XY")
         row.prop(print_3d, "use_alignxy_face_area")
 
 

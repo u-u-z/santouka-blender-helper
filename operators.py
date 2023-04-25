@@ -89,7 +89,7 @@ class MESH_OT_print3d_stk_info_volume(Operator):
             volume_str = clean_float(volume_unit, 4)
             volume_fmt = f"{volume_str} {symbol}"
 
-        report.update((tip_("Volume: {}³").format(volume_fmt), None))
+        report.update((tip_("体积: {}³").format(volume_fmt), None))
 
         return {'FINISHED'}
 
@@ -120,7 +120,7 @@ class MESH_OT_print3d_stk_info_area(Operator):
             area_str = clean_float(area_unit, 4)
             area_fmt = f"{area_str} {symbol}"
 
-        report.update((tip_("Area: {}²").format(area_fmt), None))
+        report.update((tip_("面积: {}²").format(area_fmt), None))
 
         return {'FINISHED'}
 
@@ -168,11 +168,11 @@ class MESH_OT_print3d_stk_check_solid(Operator):
         )
 
         info.append(
-            (tip_("Non Manifold Edges: {}").format(
+            (tip_("没有 Manifold 的边: {}").format(
                 len(edges_non_manifold)),
                 (bmesh.types.BMEdge,
                  edges_non_manifold)))
-        info.append((tip_("Bad Contiguous Edges: {}").format(
+        info.append((tip_("坏的相邻的边: {}").format(
             len(edges_non_contig)), (bmesh.types.BMEdge, edges_non_contig)))
 
         bm.free()
@@ -191,7 +191,7 @@ class MESH_OT_print3d_stk_check_intersections(Operator):
         from . import mesh_helpers
 
         faces_intersect = mesh_helpers.bmesh_check_self_intersect_object(obj)
-        info.append((tip_("Intersect Face: {}").format(
+        info.append((tip_("相交面: {}").format(
             len(faces_intersect)), (bmesh.types.BMFace, faces_intersect)))
 
     def execute(self, context):
@@ -223,9 +223,9 @@ class MESH_OT_print3d_stk_check_degenerate(Operator):
         edges_zero = array.array('i', (i for i, ele in enumerate(
             bm.edges) if ele.calc_length() <= threshold))
 
-        info.append((tip_("Zero Faces: {}").format(
+        info.append((tip_("Zero 面: {}").format(
             len(faces_zero)), (bmesh.types.BMFace, faces_zero)))
-        info.append((tip_("Zero Edges: {}").format(
+        info.append((tip_("Zero 边: {}").format(
             len(edges_zero)), (bmesh.types.BMEdge, edges_zero)))
 
         bm.free()
@@ -258,7 +258,7 @@ class MESH_OT_print3d_stk_check_distorted(Operator):
              if mesh_helpers.face_is_distorted(ele, angle_distort))
         )
 
-        info.append((tip_("Non-Flat Faces: {}").format(len(faces_distort)),
+        info.append((tip_("非平坦的面: {}").format(len(faces_distort)),
                     (bmesh.types.BMFace, faces_distort)))
 
         bm.free()
@@ -284,7 +284,7 @@ class MESH_OT_print3d_stk_check_thick(Operator):
 
         faces_error = mesh_helpers.bmesh_check_thick_object(
             obj, print_3d.thickness_min)
-        info.append((tip_("Thin Faces: {}").format(
+        info.append((tip_("（减）薄面: {}").format(
             len(faces_error)), (bmesh.types.BMFace, faces_error)))
 
     def execute(self, context):
@@ -313,7 +313,7 @@ class MESH_OT_print3d_stk_check_sharp(Operator):
             if ele.is_manifold and ele.calc_face_angle_signed() > angle_sharp
         ]
 
-        info.append((tip_("Sharp Edge: {}").format(
+        info.append((tip_("锐利边: {}").format(
             len(edges_sharp)), (bmesh.types.BMEdge, edges_sharp)))
         bm.free()
 
@@ -336,7 +336,7 @@ class MESH_OT_print3d_stk_check_overhang(Operator):
         angle_overhang = (math.pi / 2.0) - print_3d.angle_overhang
 
         if angle_overhang == math.pi:
-            info.append(("Skipping Overhang", ()))
+            info.append(("跳过悬空", ()))
             return
 
         bm = mesh_helpers.bmesh_copy_from_object(
@@ -352,7 +352,7 @@ class MESH_OT_print3d_stk_check_overhang(Operator):
             if z_down_angle(ele.normal, 4.0) < angle_overhang
         ]
 
-        info.append((tip_("Overhang Face: {}").format(
+        info.append((tip_("悬空面: {}").format(
             len(faces_overhang)), (bmesh.types.BMFace, faces_overhang)))
         bm.free()
 
@@ -396,7 +396,7 @@ class MESH_OT_print3d_stk_clean_distorted(Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     angle: FloatProperty(
-        name="Angle",
+        name="角度",
         description="Limit for checking distorted faces",
         subtype='ANGLE',
         default=math.radians(45.0),
@@ -417,7 +417,7 @@ class MESH_OT_print3d_stk_clean_distorted(Operator):
             bmesh.ops.triangulate(bm, faces=elems_triangulate)
             mesh_helpers.bmesh_to_object(obj, bm)
 
-        self.report({'INFO'}, tip_("Triangulated {} faces").format(
+        self.report({'INFO'}, tip_("三角形的 {} 面").format(
             len(elems_triangulate)))
 
         return {'FINISHED'}
@@ -436,13 +436,13 @@ class MESH_OT_print3d_stk_clean_non_manifold(Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     threshold: FloatProperty(
-        name="Merge Distance",
-        description="Minimum distance between elements to merge",
+        name="合并距离",
+        description="要合并的元素之间的最小距离",
         default=0.0001,
     )
     sides: IntProperty(
-        name="Sides",
-        description="Number of sides in hole required to fill (zero fills all holes)",
+        name="侧面/侧边",
+        description="需要填充的孔中的边数（0可填充所有孔）。",
         default=0,
     )
 
@@ -470,7 +470,7 @@ class MESH_OT_print3d_stk_clean_non_manifold(Operator):
         faces = bm_key[2] - bm_key_orig[2]
 
         self.report({'INFO'}, tip_(
-            "Modified: {:+} vertices, {:+} edges, {:+} faces").format(verts, edges, faces))
+            "修改后: {:+} 点, {:+} 边, {:+} 面").format(verts, edges, faces))
 
         return {'FINISHED'}
 
@@ -635,7 +635,7 @@ class MESH_OT_print3d_stk_select_report(Operator):
                 elems[i].select_set(True)
         except:
             # possible arrays are out of sync
-            self.report({'WARNING'}, "Report is out of date, re-run check")
+            self.report({'WARNING'}, "报告已过期，重新进行检查")
 
         return {'FINISHED'}
 
@@ -662,7 +662,7 @@ class MESH_OT_print3d_stk_scale_to_volume(Operator):
         options={'HIDDEN'},
     )
     volume: FloatProperty(
-        name="Volume",
+        name="体积",
         unit='VOLUME',
         min=0.0,
         max=100000.0,
@@ -672,7 +672,7 @@ class MESH_OT_print3d_stk_scale_to_volume(Operator):
         scale = math.pow(self.volume, 1 / 3) / \
             math.pow(self.volume_init, 1 / 3)
         scale_fmt = clean_float(scale, 6)
-        self.report({'INFO'}, tip_("Scaled by {}").format(scale_fmt))
+        self.report({'INFO'}, tip_("按比例计算 {}").format(scale_fmt))
         _scale(scale, self.report)
         return {'FINISHED'}
 
@@ -693,7 +693,7 @@ class MESH_OT_print3d_stk_scale_to_volume(Operator):
                 obj) for obj in context.selected_editable_objects if obj.type == 'MESH')
 
         if volume == 0.0:
-            self.report({'WARNING'}, "Object has zero volume")
+            self.report({'WARNING'}, "物体的体积为零")
             return {'CANCELLED'}
 
         self.volume_init = self.volume = abs(volume)
@@ -715,7 +715,7 @@ class MESH_OT_print3d_stk_scale_to_bounds(Operator):
         options={'HIDDEN'},
     )
     length: FloatProperty(
-        name="Length Limit",
+        name="长度限制",
         unit='LENGTH',
         min=0.0,
         max=100000.0,
@@ -749,7 +749,7 @@ class MESH_OT_print3d_stk_scale_to_bounds(Operator):
             )
 
         if length == 0.0:
-            self.report({'WARNING'}, "Object has zero bounds")
+            self.report({'WARNING'}, "物体的边为0")
             return {'CANCELLED'}
 
         self.length_init = self.length = length
@@ -818,13 +818,13 @@ class MESH_OT_print3d_stk_align_to_xy(Operator):
         if len(skip_invalid) > 0:
             for name in skip_invalid:
                 print(
-                    tip_("Align to XY: Skipping object {}. No faces selected").format(name))
+                    tip_("对准XY: 跳过了一些物体 {}. 没有选择面").format(name))
             if len(skip_invalid) == 1:
                 self.report({'WARNING'}, tip_(
-                    "Skipping object {}. No faces selected").format(skip_invalid[0]))
+                    "跳过这个物体 {}. 没有选择面").format(skip_invalid[0]))
             else:
                 self.report(
-                    {'WARNING'}, "Skipping some objects. No faces selected. See terminal")
+                    {'WARNING'}, "跳过了一些物体. 没有选择面. 请查看控制台")
         return {'FINISHED'}
 
     def invoke(self, context, event):
