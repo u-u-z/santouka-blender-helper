@@ -182,19 +182,6 @@ def register():
 
 
 def unregister():
-    bpy.utils.register_class(CustomProperties)
-    bpy.types.Scene.custom_props = bpy.props.PointerProperty(
-        type=CustomProperties)
-
-    bpy.utils.register_class(MessageBox)
-    bpy.utils.register_class(OBJECT_OT_move_to_zero)
-    bpy.utils.register_class(OBJECT_OT_reset_origin_and_move_to_zero)
-    bpy.utils.register_class(ThinningObject)
-    bpy.utils.register_class(SantoukaToolBoxPanel)
-    bpy.utils.register_class(CreateObjectsProjectionToZZero)
-
-    # TODO: need fix dependency for classess
-
     bpy.utils.unregister_class(MessageBox)
     bpy.utils.unregister_class(OBJECT_OT_move_to_zero)
     bpy.utils.unregister_class(OBJECT_OT_reset_origin_and_move_to_zero)
