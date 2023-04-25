@@ -874,3 +874,15 @@ def remesh_plane(plane_object):
     # apply remesh modifier
     bpy.ops.object.modifier_apply({"object": plane_object}, modifier="Remesh")
     return plane_object
+
+
+def get_bounds(obj):
+    world_bounds = [obj.matrix_world @
+                    Vector(bound) for bound in obj.bound_box]
+    min_x = min(world_bounds, key=lambda b: b.x).x
+    max_x = max(world_bounds, key=lambda b: b.x).x
+    min_y = min(world_bounds, key=lambda b: b.y).y
+    max_y = max(world_bounds, key=lambda b: b.y).y
+    min_z = min(world_bounds, key=lambda b: b.z).z
+    max_z = max(world_bounds, key=lambda b: b.z).z
+    return min_x, max_x, min_y, max_y, min_z, max_z
