@@ -859,10 +859,18 @@ def create_plane_for_shrinkwrap(new_obj_name, x, y):
     plane.name = f"{new_obj_name}_plane_for_shrinkwrap"
     plane.scale.x = x + (x * 0.1)
     plane.scale.y = y + (y * 0.1)
-
     bpy.ops.object.select_all(action='DESELECT')
     plane.select_set(True)
     bpy.context.view_layer.objects.active = plane
     bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
-
     return plane
+
+
+def remesh_plane(plane_object):
+    remesh_modifier = plane_object.modifiers.new(name="Remesh", type='REMESH')
+    remesh_modifier.mode = 'VOXEL'
+    # TODO: make it configurable by params
+    remesh_modifier.voxel_size = 0.3
+    # apply remesh modifier
+    bpy.ops.object.modifier_apply({"object": plane_object}, modifier="Remesh")
+    return plane_object
