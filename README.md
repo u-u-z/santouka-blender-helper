@@ -1,6 +1,16 @@
-# santouka-blender-helper
+<div align="center">
+  <img src="docs/banner.svg"/>
+  <h1>SANTOUKA BLENDER HELPER</h1>
+  <p>A Blender plug-in, toolboxes, to helping 3D printing business studios</p>
+</div>
 
-## Environment
+<br/><br/><hr/>
+## Useage (for User)
+
+1. Download from release page: https://github.com/u-u-z/santouka-blender-helper/releases
+2. Open Blender, go to `Edit` -> `Preferences` -> `Add-ons` -> `Install` -> select the downloaded zip file
+
+## Environment (for Developer)
 
 ### Develop
 - Blender 3.5.1
