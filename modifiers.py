@@ -1,0 +1,29 @@
+
+
+def remesh_direct(blender_py_lib,
+                  target_object,
+                  mode='VOXEL',
+                  voxel_size=0.3,
+                  modifier_name='TMP_REMESH_MODIFIER'
+                  ):
+    remesh_modifier = target_object.modifiers.new(
+        name=modifier_name, type='REMESH')
+    remesh_modifier.mode = mode
+    remesh_modifier.voxel_size = voxel_size
+    blender_py_lib.ops.object.modifier_apply(
+        {"object": target_object}, modifier=modifier_name)
+    return target_object
+
+def solidify_direct(blender_py_lib,
+                    target_object,
+                    thickness=0.7,
+                    modifier_name='TMP_SOLIDIFY_MODIFIER'
+                    ):
+    solidify_modifier = target_object.modifiers.new(
+        name=modifier_name, type='SOLIDIFY')
+    solidify_modifier.thickness = thickness
+    solidify_modifier.offset = 0.0
+    blender_py_lib.context.view_layer.update()
+    blender_py_lib.ops.object.modifier_apply(
+        {"object": target_object}, modifier=modifier_name)
+    return target_object
