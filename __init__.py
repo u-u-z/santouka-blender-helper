@@ -265,6 +265,9 @@ class SantoukaToolBoxPanel(bpy.types.Panel):
         col.prop(custom_props, "thinning_float")
         col.operator("object.thinning_object")
 
+        col.label(text="底部 Mesh", icon='MESH_TORUS')
+        col.operator("objects.santouka_business_mesh_bottom")
+
 
 def register():
     bpy.utils.register_class(CustomProperties)
@@ -274,6 +277,7 @@ def register():
     bpy.utils.register_class(MessageBox)
     bpy.utils.register_class(OBJECT_OT_move_to_zero)
     bpy.utils.register_class(OBJECT_OT_reset_origin_and_move_to_zero)
+    bpy.utils.register_class(OBJECT_PT_SantoukaBusinessMeshBottom)
     bpy.utils.register_class(ThinningObject)
     bpy.utils.register_class(SantoukaToolBoxPanel)
     bpy.utils.register_class(CreateObjectsProjectionToZZero)
@@ -286,6 +290,7 @@ def unregister():
     bpy.utils.unregister_class(MessageBox)
     bpy.utils.unregister_class(OBJECT_OT_move_to_zero)
     bpy.utils.unregister_class(OBJECT_OT_reset_origin_and_move_to_zero)
+    bpy.utils.unregister_class(OBJECT_PT_SantoukaBusinessMeshBottom)
     bpy.utils.unregister_class(ThinningObject)
     bpy.utils.unregister_class(SantoukaToolBoxPanel)
     del bpy.types.Scene.custom_props
