@@ -12,6 +12,12 @@ bl_info = {
     "name": "Santouka Tools",
     "blender": (3, 5, 0),
     "category": "Object",
+    "author": "Santouka",
+    "version": (0, 1, 0),
+    "location": "3D Viewport > Object",
+    "description": "A Blender plug-in, toolboxes, to helping 3D printing business studios",
+    "warning": "",
+    "doc_url": "https://github.com/u-u-z/santouka-blender-helper",
 }
 
 
