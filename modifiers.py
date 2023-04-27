@@ -1,12 +1,14 @@
+from typing import Any
+import bpy
 
-
-def remesh_direct(blender_py_lib,
-                  target_object,
+def remesh_direct(blender_py_lib: bpy,
+                  target_object: bpy.types.Object,
                   mode='VOXEL',
                   voxel_size=0.3,
                   modifier_name='TMP_REMESH_MODIFIER'
-                  ):
-    remesh_modifier = target_object.modifiers.new(
+                  ) -> bpy.types.Object:
+
+    remesh_modifier: bpy.types.Modifier = target_object.modifiers.new(
         name=modifier_name, type='REMESH')
     remesh_modifier.mode = mode
     remesh_modifier.voxel_size = voxel_size
@@ -14,8 +16,9 @@ def remesh_direct(blender_py_lib,
         {"object": target_object}, modifier=modifier_name)
     return target_object
 
-def solidify_direct(blender_py_lib,
-                    target_object,
+
+def solidify_direct(blender_py_lib: bpy,
+                    target_object: bpy.types.Object,
                     thickness=0.7,
                     modifier_name='TMP_SOLIDIFY_MODIFIER'
                     ):
