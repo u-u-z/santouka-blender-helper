@@ -1,8 +1,13 @@
-from . import modifiers
 import bpy
 import bmesh
 from mathutils import Vector, Matrix
-from . import stk_object_print3d_utils
+
+from . import (
+    utils,
+    modifiers,
+    stk_object_print3d_utils
+)
+
 bl_info = {
     "name": "Santouka Tools",
     "blender": (3, 5, 0),
@@ -141,16 +146,16 @@ class CreateObjectsProjectionToZZero(bpy.types.Operator):
 
 
 class OBJECT_PT_SantoukaBusinessMeshBottom(bpy.types.Operator):
-    bl_idname = "object.OBJECT_PT_SantoukaBusinessMeshBottom"
+    bl_idname = "objects.santouka_business_mesh_bottom"
     bl_label = "创建底部（用于吸塑）"
     bl_description = "Create bottom mesh for vacuum forming"
 
     def execute(self, context):
         # get method from dependencies
-        get_bounds = stk_object_print3d_utils.operators.get_bounds
-        create_tmp_plane = stk_object_print3d_utils.operators.create_tmp_plane
-        scale_object = stk_object_print3d_utils.operators.scale_object_110_non_standard
-        clean_after_shrinkwraped = stk_object_print3d_utils.operators.clean_useless_verts_and_faces_after_shrinkwraped
+        get_bounds = utils.get_bounds
+        create_tmp_plane = utils.create_tmp_plane
+        scale_object = utils.scale_object_110_non_standard
+        clean_after_shrinkwraped = utils.clean_useless_verts_and_faces_after_shrinkwraped
 
         # get method for modifiers
         remesh_direct = modifiers.remesh_direct
@@ -213,20 +218,23 @@ class OBJECT_PT_SantoukaBusinessMeshBottom(bpy.types.Operator):
                 # move tmp_bottom_mesh mesh useless vertices to z = 0, and clean
                 # useless vertices: the part of
                 #   not shrinkwrap project on the selected_object part
-                stash_tmp_bottom_object = clean_after_shrinkwraped(bpy, tmp_bottom_mesh)
+                stash_tmp_bottom_object = clean_after_shrinkwraped(
+                    bpy, tmp_bottom_mesh, tmp_plane_top_z)
                 # this stash_bottom_object not solidify yet
 
                 # solidify: add solid stash_tmp_bottom_object
                 # TODO: solidify need tickness options for user panel
                 #   default tickness is 0.7mm * 2
-                solidified_object = solidify_direct(bpy, stash_tmp_bottom_object)
+                solidified_object = solidify_direct(
+                    bpy, stash_tmp_bottom_object)
                 # cuz it maybe have the bad faces, so need remesh again
 
                 # remesh: solidified_object -> final_object
                 # TODO: remesh need more options (size) for user panel
                 final_object = remesh_direct(bpy, solidified_object)
 
-            except:
+            except Exception as e:
+                raise Exception(e)
                 self.report({'ERROR'}, "底部 mesh 添加失败")
                 return {'FINISHED'}
 
