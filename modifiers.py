@@ -1,6 +1,7 @@
 from typing import Any
 import bpy
 
+
 def remesh_direct(blender_py_lib: bpy,
                   target_object: bpy.types.Object,
                   mode='VOXEL',
@@ -26,6 +27,20 @@ def solidify_direct(blender_py_lib: bpy,
         name=modifier_name, type='SOLIDIFY')
     solidify_modifier.thickness = thickness
     solidify_modifier.offset = 0.0
+    blender_py_lib.context.view_layer.update()
+    blender_py_lib.ops.object.modifier_apply(
+        {"object": target_object}, modifier=modifier_name)
+    return target_object
+
+
+def decimate_direct(blender_py_lib: bpy,
+                    target_object: bpy.types.Object,
+                    ratio=0.5,
+                    modifier_name='TMP_DECIMATE_MODIFIER'
+                    ):
+    decimate_modifier = target_object.modifiers.new(
+        name=modifier_name, type='DECIMATE')
+    decimate_modifier.ratio = ratio
     blender_py_lib.context.view_layer.update()
     blender_py_lib.ops.object.modifier_apply(
         {"object": target_object}, modifier=modifier_name)
