@@ -1,5 +1,5 @@
-from typing import Any
 import bpy
+from typing import Tuple
 
 
 def remesh_direct(blender_py_lib: bpy,
@@ -45,3 +45,33 @@ def decimate_direct(blender_py_lib: bpy,
     blender_py_lib.ops.object.modifier_apply(
         {"object": target_object}, modifier=modifier_name)
     return target_object
+
+
+def shrinkwrap_project_direct(
+        blender_py_lib: bpy,
+        source_object: bpy.types.Object,
+        target_object: bpy.types.Object,
+        options: dict = {
+            'wrap_method': 'PROJECT',
+            'use_negative_direction': True,
+            'use_positive_direction': False,
+            'project_limit': 0,
+            'use_project_z': True
+        },
+        modifier_name='TMP_SHRINKWRAP_MODIFIER',
+
+) -> Tuple[bpy.types.Object, bpy.types.Object]:
+    shrinkwrap_modifier = source_object.modifiers.new(
+        name=modifier_name, type='SHRINKWRAP')
+
+    shrinkwrap_modifier.target = target_object
+    shrinkwrap_modifier.wrap_method = options['wrap_method']
+    shrinkwrap_modifier.use_negative_direction = options['use_negative_direction']
+    shrinkwrap_modifier.use_positive_direction = options['use_positive_direction']
+    shrinkwrap_modifier.project_limit = options['project_limit']
+    shrinkwrap_modifier.use_project_z = options['use_project_z']
+
+    blender_py_lib.context.view_layer.update()
+    blender_py_lib.ops.object.modifier_apply(
+        {"object": source_object}, modifier=modifier_name)
+    return (source_object, target_object)
