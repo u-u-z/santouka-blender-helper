@@ -1,13 +1,13 @@
+from . import modifiers
+import bpy
+import bmesh
+from mathutils import Vector, Matrix
+from . import stk_object_print3d_utils
 bl_info = {
     "name": "Santouka Tools",
     "blender": (3, 5, 0),
     "category": "Object",
 }
-
-from . import stk_object_print3d_utils
-from mathutils import Vector, Matrix
-import bmesh
-import bpy
 
 
 class CustomProperties(bpy.types.PropertyGroup):
