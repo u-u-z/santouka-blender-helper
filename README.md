@@ -18,6 +18,14 @@
   - `Builtin Modules: bpy, bpy.data, bpy.ops, bpy.props, bpy.types, bpy.context, bpy.utils, bgl, gpu, blf, mathutils`
   - `Convenience Imports:   from mathutils import *; from math import *`
   - ` Convenience Variables: C = bpy.context, D = bpy.data`
+
+About blender **type** support for code editor: `blender-stubs==3.10.27` in `requirements.txt` so u can:
+```shell
+$ pip -m venv venv
+$ source ./venv/bin/activat
+$ pip install -r requirements.txt
+```
+  
 ### Packaging for release
 #### Pre-requisites
 shell: `make`, `zip`
