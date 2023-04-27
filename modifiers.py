@@ -22,7 +22,7 @@ def solidify_direct(blender_py_lib: bpy,
                     target_object: bpy.types.Object,
                     thickness=0.7,
                     modifier_name='TMP_SOLIDIFY_MODIFIER'
-                    ):
+                    ) -> bpy.types.Object:
     solidify_modifier = target_object.modifiers.new(
         name=modifier_name, type='SOLIDIFY')
     solidify_modifier.thickness = thickness
@@ -37,7 +37,7 @@ def decimate_direct(blender_py_lib: bpy,
                     target_object: bpy.types.Object,
                     ratio=0.5,
                     modifier_name='TMP_DECIMATE_MODIFIER'
-                    ):
+                    ) -> bpy.types.Object:
     decimate_modifier = target_object.modifiers.new(
         name=modifier_name, type='DECIMATE')
     decimate_modifier.ratio = ratio
