@@ -5,10 +5,8 @@ from . import report
 
 class STKHelperPanel3DView:
     bl_category = "山头火工具箱"
-    # bl_space_type = 'VIEW_3D'
-    # bl_region_type = 'UI'
-    bl_space_type = 'PROPERTIES'  # 'VIEW_3D'
-    bl_region_type = 'WINDOW'  # 'UI'
+    bl_space_type = 'PROPERTIES'
+    bl_region_type = 'WINDOW'
     bl_context = "object"
 
     @classmethod
@@ -146,12 +144,6 @@ class VIEW3D_PT_stk_tools_export(STKHelperPanel3DView, Panel):
 class VIEW3D_PT_stk_tools_model_handle(STKHelperPanel3DView, Panel):
     bl_label = "模型加工处理"
     bl_options = {"DEFAULT_CLOSED"}
-    # bl_idname = "VIEW3D_PT_stk_tools_model_handle"
-    # bl_category = "山头火工具箱"
-
-    # bl_space_type = 'PROPERTIES'  # 'VIEW_3D'
-    # bl_region_type = 'WINDOW'  # 'UI'
-    # bl_context = 'scene'
 
     def draw(self, context):
         layout = self.layout
