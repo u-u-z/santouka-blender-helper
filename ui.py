@@ -5,8 +5,11 @@ from . import report
 
 class STKHelperPanel3DView:
     bl_category = "山头火工具箱"
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
+    # bl_space_type = 'VIEW_3D'
+    # bl_region_type = 'UI'
+    bl_space_type = 'PROPERTIES'  # 'VIEW_3D'
+    bl_region_type = 'WINDOW'  # 'UI'
+    bl_context = "object"
 
     @classmethod
     def poll(cls, context):
