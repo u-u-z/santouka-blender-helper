@@ -67,8 +67,8 @@ def get_unit(unit_system: str, unit: str) -> tuple[float, str]:
 # Mesh Info
 
 
-class MESH_OT_print3d_stk_info_volume(Operator):
-    bl_idname = "mesh.print3d_stk_info_volume"
+class MESH_OT_stk_tools_info_volume(Operator):
+    bl_idname = "mesh.stk_tools_info_volume"
     bl_label = "3D-Print-STK Info Volume"
     bl_description = "Report the volume of the active mesh"
 
@@ -98,8 +98,8 @@ class MESH_OT_print3d_stk_info_volume(Operator):
         return {'FINISHED'}
 
 
-class MESH_OT_print3d_stk_info_area(Operator):
-    bl_idname = "mesh.print3d_stk_info_area"
+class MESH_OT_stk_tools_info_area(Operator):
+    bl_idname = "mesh.stk_tools_info_area"
     bl_label = "3D-Print-STK Info Area"
     bl_description = "Report the surface area of the active mesh"
 
@@ -150,8 +150,8 @@ def multiple_obj_warning(self, context):
             {"INFO"}, "Multiple selected objects. Only the active one will be evaluated")
 
 
-class MESH_OT_print3d_stk_check_solid(Operator):
-    bl_idname = "mesh.print3d_stk_check_solid"
+class MESH_OT_stk_tools_check_solid(Operator):
+    bl_idname = "mesh.stk_tools_check_solid"
     bl_label = "3D-Print-STK Check Solid"
     bl_description = "Check for geometry is solid (has valid inside/outside) and correct normals"
 
@@ -185,8 +185,8 @@ class MESH_OT_print3d_stk_check_solid(Operator):
         return execute_check(self, context)
 
 
-class MESH_OT_print3d_stk_check_intersections(Operator):
-    bl_idname = "mesh.print3d_stk_check_intersect"
+class MESH_OT_stk_tools_check_intersections(Operator):
+    bl_idname = "mesh.stk_tools_check_intersect"
     bl_label = "3D-Print-STK Check Intersections"
     bl_description = "Check geometry for self intersections"
 
@@ -202,8 +202,8 @@ class MESH_OT_print3d_stk_check_intersections(Operator):
         return execute_check(self, context)
 
 
-class MESH_OT_print3d_stk_check_degenerate(Operator):
-    bl_idname = "mesh.print3d_stk_check_degenerate"
+class MESH_OT_stk_tools_check_degenerate(Operator):
+    bl_idname = "mesh.stk_tools_check_degenerate"
     bl_label = "3D-Print-STK Check Degenerate"
     bl_description = (
         "Check for degenerate geometry that may not print properly "
@@ -238,8 +238,8 @@ class MESH_OT_print3d_stk_check_degenerate(Operator):
         return execute_check(self, context)
 
 
-class MESH_OT_print3d_stk_check_distorted(Operator):
-    bl_idname = "mesh.print3d_stk_check_distort"
+class MESH_OT_stk_tools_check_distorted(Operator):
+    bl_idname = "mesh.stk_tools_check_distort"
     bl_label = "3D-Print-STK Check Distorted Faces"
     bl_description = "Check for non-flat faces"
 
@@ -271,8 +271,8 @@ class MESH_OT_print3d_stk_check_distorted(Operator):
         return execute_check(self, context)
 
 
-class MESH_OT_print3d_stk_check_thick(Operator):
-    bl_idname = "mesh.print3d_stk_check_thick"
+class MESH_OT_stk_tools_check_thick(Operator):
+    bl_idname = "mesh.stk_tools_check_thick"
     bl_label = "3D-Print-STK Check Thickness"
     bl_description = (
         "Check geometry is above the minimum thickness preference "
@@ -295,8 +295,8 @@ class MESH_OT_print3d_stk_check_thick(Operator):
         return execute_check(self, context)
 
 
-class MESH_OT_print3d_stk_check_sharp(Operator):
-    bl_idname = "mesh.print3d_stk_check_sharp"
+class MESH_OT_stk_tools_check_sharp(Operator):
+    bl_idname = "mesh.stk_tools_check_sharp"
     bl_label = "3D-Print-STK Check Sharp"
     bl_description = "Check edges are below the sharpness preference"
 
@@ -325,8 +325,8 @@ class MESH_OT_print3d_stk_check_sharp(Operator):
         return execute_check(self, context)
 
 
-class MESH_OT_print3d_stk_check_overhang(Operator):
-    bl_idname = "mesh.print3d_stk_check_overhang"
+class MESH_OT_stk_tools_check_overhang(Operator):
+    bl_idname = "mesh.stk_tools_check_overhang"
     bl_label = "3D-Print-STK Check Overhang"
     bl_description = "Check faces don't overhang past a certain angle"
 
@@ -364,19 +364,19 @@ class MESH_OT_print3d_stk_check_overhang(Operator):
         return execute_check(self, context)
 
 
-class MESH_OT_print3d_stk_check_all(Operator):
-    bl_idname = "mesh.print3d_stk_check_all"
+class MESH_OT_stk_tools_check_all(Operator):
+    bl_idname = "mesh.stk_tools_check_all"
     bl_label = "3D-Print-STK Check All"
     bl_description = "Run all checks"
 
     check_cls = (
-        MESH_OT_print3d_stk_check_solid,
-        MESH_OT_print3d_stk_check_intersections,
-        MESH_OT_print3d_stk_check_degenerate,
-        MESH_OT_print3d_stk_check_distorted,
-        MESH_OT_print3d_stk_check_thick,
-        MESH_OT_print3d_stk_check_sharp,
-        MESH_OT_print3d_stk_check_overhang,
+        MESH_OT_stk_tools_check_solid,
+        MESH_OT_stk_tools_check_intersections,
+        MESH_OT_stk_tools_check_degenerate,
+        MESH_OT_stk_tools_check_distorted,
+        MESH_OT_stk_tools_check_thick,
+        MESH_OT_stk_tools_check_sharp,
+        MESH_OT_stk_tools_check_overhang,
     )
 
     def execute(self, context):
@@ -393,8 +393,8 @@ class MESH_OT_print3d_stk_check_all(Operator):
         return {'FINISHED'}
 
 
-class MESH_OT_print3d_stk_clean_distorted(Operator):
-    bl_idname = "mesh.print3d_stk_clean_distorted"
+class MESH_OT_stk_tools_clean_distorted(Operator):
+    bl_idname = "mesh.stk_tools_clean_distorted"
     bl_label = "3D-Print-STK Clean Distorted"
     bl_description = "Tessellate distorted faces"
     bl_options = {'REGISTER', 'UNDO'}
@@ -433,8 +433,8 @@ class MESH_OT_print3d_stk_clean_distorted(Operator):
         return self.execute(context)
 
 
-class MESH_OT_print3d_stk_clean_non_manifold(Operator):
-    bl_idname = "mesh.print3d_stk_clean_non_manifold"
+class MESH_OT_stk_tools_clean_non_manifold(Operator):
+    bl_idname = "mesh.stk_tools_clean_non_manifold"
     bl_label = "3D-Print-STK Clean Non-Manifold"
     bl_description = "Cleanup problems, like holes, non-manifold vertices and inverted normals"
     bl_options = {'REGISTER', 'UNDO'}
@@ -584,8 +584,8 @@ class MESH_OT_print3d_stk_clean_non_manifold(Operator):
         bpy.ops.mesh.delete(type='VERT')
 
 
-class MESH_OT_print3d_stk_clean_thin(Operator):
-    bl_idname = "mesh.print3d_stk_clean_thin"
+class MESH_OT_stk_tools_clean_thin(Operator):
+    bl_idname = "mesh.stk_tools_clean_thin"
     bl_label = "3D-Print-STK Clean Thin"
     bl_description = "Ensure minimum thickness"
     bl_options = {'REGISTER', 'UNDO'}
@@ -600,8 +600,8 @@ class MESH_OT_print3d_stk_clean_thin(Operator):
 # Select Report
 # ... helper function for info UI
 
-class MESH_OT_print3d_stk_select_report(Operator):
-    bl_idname = "mesh.print3d_stk_select_report"
+class MESH_OT_stk_tools_select_report(Operator):
+    bl_idname = "mesh.stk_tools_select_report"
     bl_label = "3D-Print-STK Select Report"
     bl_description = "Select the data associated with this report"
     bl_options = {'INTERNAL'}
@@ -632,7 +632,7 @@ class MESH_OT_print3d_stk_select_report(Operator):
 
         bm = bmesh.from_edit_mesh(obj.data)
         elems = getattr(
-            bm, MESH_OT_print3d_stk_select_report._type_to_attr[bm_type])[:]
+            bm, MESH_OT_stk_tools_select_report._type_to_attr[bm_type])[:]
 
         try:
             for i in bm_array:
@@ -656,8 +656,8 @@ def _scale(scale, report=None, report_suffix=""):
             scale_fmt, report_suffix))
 
 
-class MESH_OT_print3d_stk_scale_to_volume(Operator):
-    bl_idname = "mesh.print3d_stk_scale_to_volume"
+class MESH_OT_stk_tools_scale_to_volume(Operator):
+    bl_idname = "mesh.stk_tools_scale_to_volume"
     bl_label = "Scale to Volume"
     bl_description = "Scale edit-mesh or selected-objects to a set volume"
     bl_options = {'REGISTER', 'UNDO'}
@@ -706,8 +706,8 @@ class MESH_OT_print3d_stk_scale_to_volume(Operator):
         return wm.invoke_props_dialog(self)
 
 
-class MESH_OT_print3d_stk_scale_to_bounds(Operator):
-    bl_idname = "mesh.print3d_stk_scale_to_bounds"
+class MESH_OT_stk_tools_scale_to_bounds(Operator):
+    bl_idname = "mesh.stk_tools_scale_to_bounds"
     bl_label = "Scale to Bounds"
     bl_description = "Scale edit-mesh or selected-objects to fit within a maximum length"
     bl_options = {'REGISTER', 'UNDO'}
@@ -763,8 +763,8 @@ class MESH_OT_print3d_stk_scale_to_bounds(Operator):
         return wm.invoke_props_dialog(self)
 
 
-class MESH_OT_print3d_stk_align_to_xy(Operator):
-    bl_idname = "mesh.print3d_stk_align_to_xy"
+class MESH_OT_stk_tools_align_to_xy(Operator):
+    bl_idname = "mesh.stk_tools_align_to_xy"
     bl_label = "Align (rotate) object to XY plane"
     bl_description = (
         "Rotates entire object (not mesh) so the selected faces/vertices lie, on average, parallel to the XY plane "
@@ -840,8 +840,8 @@ class MESH_OT_print3d_stk_align_to_xy(Operator):
 # ------
 # Export
 
-class MESH_OT_print3d_stk_export(Operator):
-    bl_idname = "mesh.print3d_stk_export"
+class MESH_OT_stk_tools_export(Operator):
+    bl_idname = "mesh.stk_tools_export"
     bl_label = "3D-Print-STK Export"
     bl_description = "Export selected objects using 3D-Print-STK settings"
 
@@ -896,7 +896,7 @@ class OBJECT_OT_move_to_zero(bpy.types.Operator):
 
 class OBJECT_OT_reset_origin_and_move_to_zero(bpy.types.Operator):
     bl_idname = "object.reset_origin_and_move_to_zero"
-    bl_label = "至原点,并重置原点"
+    bl_label = "移动至原点"
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
@@ -917,7 +917,7 @@ class OBJECT_OT_reset_origin_and_move_to_zero(bpy.types.Operator):
 
 class ThinningObject(bpy.types.Operator):
     bl_idname = "object.thinning_object"
-    bl_label = "减小/增加 模型厚度（双平行面）"
+    bl_label = "改变厚度"
 
     def execute(self, context):
         selected_objects = context.selected_objects
@@ -950,7 +950,7 @@ class ThinningObject(bpy.types.Operator):
 
 class CreateObjectsProjectionToZZero(bpy.types.Operator):
     bl_idname = "object.create_object_projection"
-    bl_label = "创建（z轴=0）XY面投影"
+    bl_label = "创建投影（Z=0）"
 
     def execute(self, context):
         selected_objects = context.selected_objects
@@ -981,7 +981,7 @@ class CreateObjectsProjectionToZZero(bpy.types.Operator):
 
 class OBJECT_PT_SantoukaBusinessMeshBottom(bpy.types.Operator):
     bl_idname = "objects.santouka_business_mesh_bottom"
-    bl_label = "创建底部（用于吸塑）"
+    bl_label = "创建底部（低精度）"
     bl_description = "Create bottom mesh for vacuum forming"
 
     def execute(self, context):
