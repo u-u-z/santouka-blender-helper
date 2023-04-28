@@ -61,15 +61,15 @@ def write_mesh(context, report_cb):
     scene = context.scene
     layer = context.view_layer
     unit = scene.unit_settings
-    print_3d = scene.print_3d
+    stk_tools_props = scene.stk_tools_props
 
-    export_format = print_3d.export_format
+    export_format = stk_tools_props.export_format
     global_scale = unit.scale_length if (
-        unit.system != 'NONE' and print_3d.use_apply_scale) else 1.0
-    path_mode = 'COPY' if print_3d.use_export_texture else 'AUTO'
-    export_path = bpy.path.abspath(print_3d.export_path)
+        unit.system != 'NONE' and stk_tools_props.use_apply_scale) else 1.0
+    path_mode = 'COPY' if stk_tools_props.use_export_texture else 'AUTO'
+    export_path = bpy.path.abspath(stk_tools_props.export_path)
     obj = layer.objects.active
-    export_data_layers = print_3d.use_data_layers
+    export_data_layers = stk_tools_props.use_data_layers
 
     # Create name 'export_path/blendname-objname'
     # add the filename component

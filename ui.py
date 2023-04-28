@@ -1,18 +1,13 @@
-# SPDX-License-Identifier: GPL-2.0-or-later
-
-# Interface for this addon.
-
-
 from bpy.types import Panel
 import bmesh
 
 from . import report
 
-
-class View3DPrintPanelSTK:
-    bl_category = "山头火工具箱：3D打印"
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
+class STKHelperPanel3DView:
+    bl_category = "山头火工具箱"
+    bl_space_type = 'PROPERTIES'
+    bl_region_type = 'WINDOW'
+    bl_context = "object"
 
     @classmethod
     def poll(cls, context):
@@ -20,9 +15,8 @@ class View3DPrintPanelSTK:
         return obj is not None and obj.type == 'MESH' and obj.mode in {'OBJECT', 'EDIT'}
 
 
-class VIEW3D_PT_print3d_stk_analyze(View3DPrintPanelSTK, Panel):
-    bl_idname = "VIEW3D_PT_print3d_stk_analyze"
-    bl_category = "山头火工具箱：3D打印"
+class VIEW3D_PT_stk_tools_analyze(STKHelperPanel3DView, Panel):
+    bl_idname = "VIEW3D_PT_stk_tools_analyze"
     bl_label = "分析"
 
     _type_to_icon = {
@@ -45,7 +39,7 @@ class VIEW3D_PT_print3d_stk_analyze(View3DPrintPanelSTK, Panel):
             for i, (text, data) in enumerate(info):
                 if is_edit and data and data[1]:
                     bm_type, _bm_array = data
-                    col.operator("mesh.print3d_stk_select_report", text=text,
+                    col.operator("mesh.stk_tools_select_report", text=text,
                                  icon=self._type_to_icon[bm_type],).index = i
                 else:
                     col.label(text=text)
@@ -53,77 +47,77 @@ class VIEW3D_PT_print3d_stk_analyze(View3DPrintPanelSTK, Panel):
     def draw(self, context):
         layout = self.layout
 
-        print_3d = context.scene.print_3d
+        stk_tools_props = context.scene.stk_tools_props
 
         # TODO, presets
 
         layout.label(text="统计")
         row = layout.row(align=True)
-        row.operator("mesh.print3d_stk_info_volume", text="体积")
-        row.operator("mesh.print3d_stk_info_area", text="面积")
+        row.operator("mesh.stk_tools_info_volume", text="体积")
+        row.operator("mesh.stk_tools_info_area", text="面积")
 
         layout.label(text="检查")
         col = layout.column(align=True)
-        col.operator("mesh.print3d_stk_check_solid", text="实体")
-        col.operator("mesh.print3d_stk_check_intersect", text="交叉")
+        col.operator("mesh.stk_tools_check_solid", text="实体")
+        col.operator("mesh.stk_tools_check_intersect", text="交叉")
         row = col.row(align=True)
-        row.operator("mesh.print3d_stk_check_degenerate", text="逆生成/损坏")
-        row.prop(print_3d, "threshold_zero", text="")
+        row.operator("mesh.stk_tools_check_degenerate", text="逆生成/损坏")
+        row.prop(stk_tools_props, "threshold_zero", text="")
         row = col.row(align=True)
-        row.operator("mesh.print3d_stk_check_distort", text="扭曲/失真")
-        row.prop(print_3d, "angle_distort", text="")
+        row.operator("mesh.stk_tools_check_distort", text="扭曲/失真")
+        row.prop(stk_tools_props, "angle_distort", text="")
         row = col.row(align=True)
-        row.operator("mesh.print3d_stk_check_thick", text="厚度")
-        row.prop(print_3d, "thickness_min", text="")
+        row.operator("mesh.stk_tools_check_thick", text="厚度")
+        row.prop(stk_tools_props, "thickness_min", text="")
         row = col.row(align=True)
-        row.operator("mesh.print3d_stk_check_sharp", text="边缘锋利/尖锐")
-        row.prop(print_3d, "angle_sharp", text="")
+        row.operator("mesh.stk_tools_check_sharp", text="边缘锋利/尖锐")
+        row.prop(stk_tools_props, "angle_sharp", text="")
         row = col.row(align=True)
-        row.operator("mesh.print3d_stk_check_overhang", text="外悬")
-        row.prop(print_3d, "angle_overhang", text="")
-        layout.operator("mesh.print3d_stk_check_all", text="检查所有")
+        row.operator("mesh.stk_tools_check_overhang", text="外悬")
+        row.prop(stk_tools_props, "angle_overhang", text="")
+        layout.operator("mesh.stk_tools_check_all", text="检查模型的所有项目")
 
         self.draw_report(context)
 
 
-class VIEW3D_PT_print3d_stk_cleanup(View3DPrintPanelSTK, Panel):
+class VIEW3D_PT_stk_tools_cleanup(STKHelperPanel3DView, Panel):
     bl_label = "清理"
     bl_options = {"DEFAULT_CLOSED"}
 
     def draw(self, context):
         layout = self.layout
 
-        print_3d = context.scene.print_3d
+        stk_tools_props = context.scene.stk_tools_props
 
         row = layout.row(align=True)
-        row.operator("mesh.print3d_stk_clean_distorted", text="扭曲/失真")
-        row.prop(print_3d, "angle_distort", text="")
-        layout.operator("mesh.print3d_stk_clean_non_manifold",
+        row.operator("mesh.stk_tools_clean_distorted", text="扭曲/失真")
+        row.prop(stk_tools_props, "angle_distort", text="")
+        layout.operator("mesh.stk_tools_clean_non_manifold",
                         text="创建 Manifold")
         # XXX TODO
-        # layout.operator("mesh.print3d_stk_clean_thin", text="Wall Thickness")
+        # layout.operator("mesh.stk_tools_clean_thin", text="Wall Thickness")
 
 
-class VIEW3D_PT_print3d_stk_transform(View3DPrintPanelSTK, Panel):
-    bl_label = "变换"
+class VIEW3D_PT_stk_tools_transform(STKHelperPanel3DView, Panel):
+    bl_label = "模型缩放"
     bl_options = {"DEFAULT_CLOSED"}
 
     def draw(self, context):
         layout = self.layout
 
-        print_3d = context.scene.print_3d
+        stk_tools_props = context.scene.stk_tools_props
 
         layout.label(text="Scale To")
         row = layout.row(align=True)
-        row.operator("mesh.print3d_stk_scale_to_volume", text="体积")
-        row.operator("mesh.print3d_stk_scale_to_bounds", text="边界")
+        row.operator("mesh.stk_tools_scale_to_volume", text="体积")
+        row.operator("mesh.stk_tools_scale_to_bounds", text="边界")
         row = layout.row(align=True)
-        row.operator("mesh.print3d_stk_align_to_xy", text="对齐XY")
-        row.prop(print_3d, "use_alignxy_face_area")
+        row.operator("mesh.stk_tools_align_to_xy", text="对齐XY")
+        row.prop(stk_tools_props, "use_alignxy_face_area")
 
 
-class VIEW3D_PT_print3d_stk_export(View3DPrintPanelSTK, Panel):
-    bl_label = "导出"
+class VIEW3D_PT_stk_tools_export(STKHelperPanel3DView, Panel):
+    bl_label = "模型-导出"
     bl_options = {"DEFAULT_CLOSED"}
 
     def draw(self, context):
@@ -131,17 +125,41 @@ class VIEW3D_PT_print3d_stk_export(View3DPrintPanelSTK, Panel):
         layout.use_property_split = True
         layout.use_property_decorate = False
 
-        print_3d = context.scene.print_3d
-
-        layout.prop(print_3d, "export_path", text="")
-        layout.prop(print_3d, "export_format")
+        stk_tools_props = context.scene.stk_tools_props
+        layout.label(text="请选择导出目录")
+        layout.prop(stk_tools_props, "export_path", text="")
+        layout.prop(stk_tools_props, "export_format")
 
         col = layout.column()
-        col.prop(print_3d, "use_apply_scale")
-        col.prop(print_3d, "use_export_texture")
+        col.prop(stk_tools_props, "use_apply_scale")
+        col.prop(stk_tools_props, "use_export_texture")
         sub = col.column()
-        sub.active = print_3d.export_format != "STL"
-        sub.prop(print_3d, "use_data_layers")
+        sub.active = stk_tools_props.export_format != "STL"
+        sub.prop(stk_tools_props, "use_data_layers")
 
-        layout.operator("mesh.print3d_stk_export",
+        layout.operator("mesh.stk_tools_export",
                         text="导出", icon='EXPORT')
+
+
+class VIEW3D_PT_stk_tools_model_handle(STKHelperPanel3DView, Panel):
+    bl_label = "模型加工处理"
+    bl_options = {"DEFAULT_CLOSED"}
+
+    def draw(self, context):
+        layout = self.layout
+        col = layout.column()
+        col.label(text="移动物体", icon='OBJECT_DATA')
+        col.label(text="\n请先选择物体")
+        col.operator("object.reset_origin_and_move_to_zero")
+        # col.operator("object.move_to_zero")
+
+        col.label(text="投影", icon='LIGHT')
+        col.operator("object.create_object_projection")
+
+        col.label(text="减薄/增厚(正增负减)", icon='HOLDOUT_OFF')
+        stk_tools_props = context.scene.stk_tools_props
+        col.prop(stk_tools_props, "thinning_float")
+        col.operator("object.thinning_object")
+
+        col.label(text="底部 Mesh", icon='MESH_TORUS')
+        col.operator("objects.santouka_business_mesh_bottom")

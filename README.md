@@ -35,7 +35,7 @@ Please use `make` (GNU Make 3.81) to package the add-on.
 $ make
 
 updating: satnouka-blender-helper/ (stored 0%)
-updating: satnouka-blender-helper/stk_object_print3d_utils.py (deflated 69%)
+updating: satnouka-blender-helper/main.py (deflated 69%)
 updating: satnouka-blender-helper/mesh_helpers.py (deflated 64%)
 updating: satnouka-blender-helper/ui.py (deflated 71%)
 updating: satnouka-blender-helper/__init__.py (deflated 73%)
