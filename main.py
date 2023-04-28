@@ -1,9 +1,5 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-from . import (
-    ui,
-    operators,
-)
 from bpy.props import (
     StringProperty,
     BoolProperty,
@@ -15,8 +11,16 @@ from bpy.types import PropertyGroup
 import bpy
 import math
 
+from . import (
+    ui,
+    operators,
+)
+
 
 class SceneProperties(PropertyGroup):
+
+    thinning_float: bpy.props.FloatProperty(name="减薄/增厚量")
+
     use_alignxy_face_area: BoolProperty(
         name="面的面积",
         description="Normalize normals proportional to face areas",
@@ -105,7 +109,9 @@ classes = (
     ui.VIEW3D_PT_print3d_stk_cleanup,
     ui.VIEW3D_PT_print3d_stk_transform,
     ui.VIEW3D_PT_print3d_stk_export,
+    ui.VIEW3D_PT_print3d_stk_model_handle,
 
+    # operators port from 3d print utils
     operators.MESH_OT_print3d_stk_info_volume,
     operators.MESH_OT_print3d_stk_info_area,
     operators.MESH_OT_print3d_stk_check_degenerate,
@@ -124,18 +130,24 @@ classes = (
     operators.MESH_OT_print3d_stk_scale_to_bounds,
     operators.MESH_OT_print3d_stk_align_to_xy,
     operators.MESH_OT_print3d_stk_export,
+
+    # operators from the santouka business part
+    operators.MessageBox,
+    operators.OBJECT_OT_move_to_zero,
+    operators.OBJECT_OT_reset_origin_and_move_to_zero,
+    operators.OBJECT_PT_SantoukaBusinessMeshBottom,
+    operators.ThinningObject,
+    operators.CreateObjectsProjectionToZZero,
 )
 
 
-def in_side_addon_register():
+def addon_register():
     for cls in classes:
         bpy.utils.register_class(cls)
+    bpy.types.Scene.stk_tools_props = PointerProperty(type=SceneProperties)
 
-    bpy.types.Scene.print_3d = PointerProperty(type=SceneProperties)
 
-
-def in_side_addon_unregister():
+def addon_unregister():
     for cls in classes:
         bpy.utils.unregister_class(cls)
-
-    del bpy.types.Scene.print_3d
+    del bpy.types.Scene.stk_tools_props

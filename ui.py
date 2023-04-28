@@ -1,16 +1,10 @@
-# SPDX-License-Identifier: GPL-2.0-or-later
-
-# Interface for this addon.
-
-
 from bpy.types import Panel
 import bmesh
 
 from . import report
 
-
 class View3DPrintPanelSTK:
-    bl_category = "山头火工具箱：3D打印"
+    bl_category = "山头火工具箱"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
 
@@ -22,7 +16,6 @@ class View3DPrintPanelSTK:
 
 class VIEW3D_PT_print3d_stk_analyze(View3DPrintPanelSTK, Panel):
     bl_idname = "VIEW3D_PT_print3d_stk_analyze"
-    bl_category = "山头火工具箱：3D打印"
     bl_label = "分析"
 
     _type_to_icon = {
@@ -53,7 +46,7 @@ class VIEW3D_PT_print3d_stk_analyze(View3DPrintPanelSTK, Panel):
     def draw(self, context):
         layout = self.layout
 
-        print_3d = context.scene.print_3d
+        stk_tools_props = context.scene.stk_tools_props
 
         # TODO, presets
 
@@ -68,19 +61,19 @@ class VIEW3D_PT_print3d_stk_analyze(View3DPrintPanelSTK, Panel):
         col.operator("mesh.print3d_stk_check_intersect", text="交叉")
         row = col.row(align=True)
         row.operator("mesh.print3d_stk_check_degenerate", text="逆生成/损坏")
-        row.prop(print_3d, "threshold_zero", text="")
+        row.prop(stk_tools_props, "threshold_zero", text="")
         row = col.row(align=True)
         row.operator("mesh.print3d_stk_check_distort", text="扭曲/失真")
-        row.prop(print_3d, "angle_distort", text="")
+        row.prop(stk_tools_props, "angle_distort", text="")
         row = col.row(align=True)
         row.operator("mesh.print3d_stk_check_thick", text="厚度")
-        row.prop(print_3d, "thickness_min", text="")
+        row.prop(stk_tools_props, "thickness_min", text="")
         row = col.row(align=True)
         row.operator("mesh.print3d_stk_check_sharp", text="边缘锋利/尖锐")
-        row.prop(print_3d, "angle_sharp", text="")
+        row.prop(stk_tools_props, "angle_sharp", text="")
         row = col.row(align=True)
         row.operator("mesh.print3d_stk_check_overhang", text="外悬")
-        row.prop(print_3d, "angle_overhang", text="")
+        row.prop(stk_tools_props, "angle_overhang", text="")
         layout.operator("mesh.print3d_stk_check_all", text="检查所有")
 
         self.draw_report(context)
@@ -93,11 +86,11 @@ class VIEW3D_PT_print3d_stk_cleanup(View3DPrintPanelSTK, Panel):
     def draw(self, context):
         layout = self.layout
 
-        print_3d = context.scene.print_3d
+        stk_tools_props = context.scene.stk_tools_props
 
         row = layout.row(align=True)
         row.operator("mesh.print3d_stk_clean_distorted", text="扭曲/失真")
-        row.prop(print_3d, "angle_distort", text="")
+        row.prop(stk_tools_props, "angle_distort", text="")
         layout.operator("mesh.print3d_stk_clean_non_manifold",
                         text="创建 Manifold")
         # XXX TODO
@@ -111,7 +104,7 @@ class VIEW3D_PT_print3d_stk_transform(View3DPrintPanelSTK, Panel):
     def draw(self, context):
         layout = self.layout
 
-        print_3d = context.scene.print_3d
+        stk_tools_props = context.scene.stk_tools_props
 
         layout.label(text="Scale To")
         row = layout.row(align=True)
@@ -119,7 +112,7 @@ class VIEW3D_PT_print3d_stk_transform(View3DPrintPanelSTK, Panel):
         row.operator("mesh.print3d_stk_scale_to_bounds", text="边界")
         row = layout.row(align=True)
         row.operator("mesh.print3d_stk_align_to_xy", text="对齐XY")
-        row.prop(print_3d, "use_alignxy_face_area")
+        row.prop(stk_tools_props, "use_alignxy_face_area")
 
 
 class VIEW3D_PT_print3d_stk_export(View3DPrintPanelSTK, Panel):
@@ -131,17 +124,46 @@ class VIEW3D_PT_print3d_stk_export(View3DPrintPanelSTK, Panel):
         layout.use_property_split = True
         layout.use_property_decorate = False
 
-        print_3d = context.scene.print_3d
+        stk_tools_props = context.scene.stk_tools_props
 
-        layout.prop(print_3d, "export_path", text="")
-        layout.prop(print_3d, "export_format")
+        layout.prop(stk_tools_props, "export_path", text="")
+        layout.prop(stk_tools_props, "export_format")
 
         col = layout.column()
-        col.prop(print_3d, "use_apply_scale")
-        col.prop(print_3d, "use_export_texture")
+        col.prop(stk_tools_props, "use_apply_scale")
+        col.prop(stk_tools_props, "use_export_texture")
         sub = col.column()
-        sub.active = print_3d.export_format != "STL"
-        sub.prop(print_3d, "use_data_layers")
+        sub.active = stk_tools_props.export_format != "STL"
+        sub.prop(stk_tools_props, "use_data_layers")
 
         layout.operator("mesh.print3d_stk_export",
                         text="导出", icon='EXPORT')
+
+
+class VIEW3D_PT_print3d_stk_model_handle(View3DPrintPanelSTK, Panel):
+    bl_label = "模型加工处理"
+    bl_options = {"DEFAULT_CLOSED"}
+    # bl_idname = "VIEW3D_PT_print3d_stk_model_handle"
+    # bl_category = "山头火工具箱"
+
+    # bl_space_type = 'PROPERTIES'  # 'VIEW_3D'
+    # bl_region_type = 'WINDOW'  # 'UI'
+    # bl_context = 'scene'
+
+    def draw(self, context):
+        layout = self.layout
+        col = layout.column()
+        col.label(text="移动对象（请选择对象）", icon='OBJECT_DATA')
+        col.operator("object.reset_origin_and_move_to_zero")
+        col.operator("object.move_to_zero")
+
+        col.label(text="投影", icon='LIGHT')
+        col.operator("object.create_object_projection")
+
+        col.label(text="减薄/增厚(正增负减)", icon='HOLDOUT_OFF')
+        stk_tools_props = context.scene.stk_tools_props
+        col.prop(stk_tools_props, "thinning_float")
+        col.operator("object.thinning_object")
+
+        col.label(text="底部 Mesh", icon='MESH_TORUS')
+        col.operator("objects.santouka_business_mesh_bottom")

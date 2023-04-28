@@ -1,4 +1,4 @@
-from mathutils import Vector, Matrix
+from mathutils import Vector
 from typing import Tuple
 import bpy
 import bmesh
@@ -90,3 +90,7 @@ def clean_useless_verts_and_faces_after_shrinkwraped(
     blender_py.ops.object.mode_set(mode='OBJECT')
 
     return target_object
+
+
+def show_message_box(message):
+    bpy.ops.message.message_box('INVOKE_DEFAULT', message=message)
