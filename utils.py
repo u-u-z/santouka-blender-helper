@@ -94,3 +94,21 @@ def clean_useless_verts_and_faces_after_shrinkwraped(
 
 def show_message_box(message):
     bpy.ops.message.message_box('INVOKE_DEFAULT', message=message)
+
+def reset_object_origin(
+        blender_py: bpy,
+        target_object: bpy.types.Object,
+        origin_center: str = 'MEDIAN'):
+    """
+      reset object origin
+
+      :param blender_py: bpy
+      :param target_object: bpy.types.Object
+      :param origin_center: support 'MEDIAN' or 'GEOMETRY' or 'BOUNDS' or 'ORIGIN' or 'CURSOR' or 'NONE'
+      :return: bpy.types.Object
+    """
+    bpy.ops.object.select_all(action='DESELECT')
+    target_object.select_set(True)
+    blender_py.context.view_layer.objects.active = target_object
+    bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='MEDIAN')
+    return target_object

@@ -1067,6 +1067,10 @@ class OBJECT_PT_SantoukaBusinessMeshBottom(bpy.types.Operator):
                 # TODO: remesh need more options (size) for user panel
                 final_object = remesh_direct(bpy, solidified_object)
 
+                # feat: issue-10
+                # reseted_final_object = utils.reset_object_origin(bpy, final_object)
+                utils.reset_object_origin(bpy, final_object)
+
             except Exception as e:
                 raise Exception(e)
                 self.report({'ERROR'}, "底部 mesh 添加失败")
