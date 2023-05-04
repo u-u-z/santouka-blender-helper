@@ -1016,7 +1016,7 @@ class OBJECT_PT_SantoukaBusinessMeshBottom(bpy.types.Operator):
 
             # if x,y is too small, then report warning
             if tmp_plane_x < 0.1 or tmp_plane_y < 0.1:
-                self.report({'WARNING'}, "选择对象的宽度或高度过小")
+                utils.show_message_box("所选择对象过小，无法创建底部")
                 return {'FINISHED'}
 
             try:
