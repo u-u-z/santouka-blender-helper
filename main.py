@@ -19,7 +19,18 @@ from . import (
 
 class SceneProperties(PropertyGroup):
 
-    thinning_float: bpy.props.FloatProperty(name="减薄/增厚量")
+    """
+    Properties for the scene.
+    """
+
+    thinning_float: bpy.props.FloatProperty(name="减薄/增厚量", default=-0.5)
+
+    bottom_thinning_float: bpy.props.FloatProperty(
+        name="底部支撑壁厚(mm)", default=1.5)
+
+    """
+    Properties 3D print helper tools. 
+    """
 
     use_alignxy_face_area: BoolProperty(
         name="面的面积",
