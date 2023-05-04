@@ -985,6 +985,9 @@ class OBJECT_PT_SantoukaBusinessMeshBottom(bpy.types.Operator):
     bl_description = "Create bottom mesh for vacuum forming"
 
     def execute(self, context):
+        # TODO: Add params check and error message
+        #   befor the business logic
+
         # get method from dependencies
         get_bounds = utils.get_bounds
         create_tmp_plane = utils.create_tmp_plane
