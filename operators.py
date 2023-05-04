@@ -1020,6 +1020,15 @@ class OBJECT_PT_SantoukaBusinessMeshBottom(bpy.types.Operator):
                 return {'FINISHED'}
 
             try:
+                # get thickness from scene props
+                real_world_solidify_thickness = context.scene.stk_tools_props.bottom_thinning_float/2
+                # get remesh size from scene props
+                bottom_remesh_size = context.scene.stk_tools_props.bottom_remesh_float
+
+                if bottom_remesh_size > real_world_solidify_thickness:
+                    utils.show_message_box("底部mesh的内部支撑不能大于厚度")
+                    return {'FINISHED'}
+
                 # create tmp_plane and scale to selected_object size
                 # tmp_plane_not_scaled: tmp_plane without scale
                 # tmp_plane: tmp_plane after scale
@@ -1038,10 +1047,11 @@ class OBJECT_PT_SantoukaBusinessMeshBottom(bpy.types.Operator):
 
                 # remesh: tmp_plane -> tmp_plane_remeshed
                 # for next shrinkwrap need more vertices & faces
-                # TODO: remesh need more options (size) for user panel
                 tmp_plane_object_remeshed = remesh_direct(
                     bpy,
-                    tmp_plane_object
+                    tmp_plane_object,
+                    'VOXEL',
+                    bottom_remesh_size
                 )
 
                 # shrinkwrap: tmp_plane_remeshed -> selected_object
@@ -1059,7 +1069,6 @@ class OBJECT_PT_SantoukaBusinessMeshBottom(bpy.types.Operator):
                 # this stash_bottom_object not solidify yet
 
                 # solidify: add solid stash_tmp_bottom_object
-                real_world_solidify_thickness = context.scene.stk_tools_props.bottom_thinning_float/2
                 # thickness = real_world_solidify_thickness / 2
                 # as default unit "m" in blender
                 judge_thickness: bool = (
@@ -1077,8 +1086,8 @@ class OBJECT_PT_SantoukaBusinessMeshBottom(bpy.types.Operator):
                 # cuz it maybe have the bad faces, so need remesh again
 
                 # remesh: solidified_object -> final_object
-                # TODO: remesh need more options (size) for user panel
-                final_object = remesh_direct(bpy, solidified_object)
+                final_object = remesh_direct(
+                    bpy, solidified_object, 'VOXEL', bottom_remesh_size)
 
                 # feat: issue-10
                 # reseted_final_object = utils.reset_object_origin(bpy, final_object)

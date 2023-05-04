@@ -169,5 +169,7 @@ class VIEW3D_PT_stk_tools_model_handle(STKHelperPanel3DView, Panel):
         col.label(text="底部 Mesh", icon='MESH_TORUS')
         col.label(text="\n设置“底部支撑”：厚度")
         col.prop(stk_tools_props, "bottom_thinning_float")
-        col.label(text="\n请先选择物体")
+        col.label(text="\n设置“底部支撑”：支撑密度")
+        col.prop(stk_tools_props, "bottom_remesh_float")
+        col.label(text="\n请先选择物体，后增加底部支撑")
         col.operator("objects.santouka_business_mesh_bottom")

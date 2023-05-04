@@ -27,6 +27,8 @@ class SceneProperties(PropertyGroup):
 
     bottom_thinning_float: bpy.props.FloatProperty(
         name="底部支撑壁厚(mm)", default=1.5)
+    bottom_remesh_float: bpy.props.FloatProperty(
+        name="底部支撑网格大小(mm)", default=0.3)
 
     """
     Properties 3D print helper tools. 
