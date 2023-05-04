@@ -19,6 +19,7 @@ class STKHelperPanel3DView:
 class VIEW3D_PT_stk_tools_analyze(STKHelperPanel3DView, Panel):
     bl_idname = "VIEW3D_PT_stk_tools_analyze"
     bl_label = "分析"
+    bl_options = {"DEFAULT_CLOSED"}
 
     _type_to_icon = {
         bmesh.types.BMVert: 'VERTEXSEL',
@@ -144,7 +145,7 @@ class VIEW3D_PT_stk_tools_export(STKHelperPanel3DView, Panel):
 
 class VIEW3D_PT_stk_tools_model_handle(STKHelperPanel3DView, Panel):
     bl_label = "模型加工处理"
-    bl_options = {"DEFAULT_CLOSED"}
+    # bl_options = {"DEFAULT_CLOSED"}
 
     def draw(self, context):
 
