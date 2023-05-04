@@ -3,6 +3,7 @@ import bmesh
 
 from . import report
 
+
 class STKHelperPanel3DView:
     bl_category = "山头火工具箱"
     bl_space_type = 'PROPERTIES'
@@ -146,6 +147,9 @@ class VIEW3D_PT_stk_tools_model_handle(STKHelperPanel3DView, Panel):
     bl_options = {"DEFAULT_CLOSED"}
 
     def draw(self, context):
+
+        stk_tools_props = context.scene.stk_tools_props
+
         layout = self.layout
         col = layout.column()
         col.label(text="移动物体", icon='OBJECT_DATA')
@@ -157,9 +161,12 @@ class VIEW3D_PT_stk_tools_model_handle(STKHelperPanel3DView, Panel):
         col.operator("object.create_object_projection")
 
         col.label(text="减薄/增厚(正增负减)", icon='HOLDOUT_OFF')
-        stk_tools_props = context.scene.stk_tools_props
+
         col.prop(stk_tools_props, "thinning_float")
         col.operator("object.thinning_object")
 
         col.label(text="底部 Mesh", icon='MESH_TORUS')
+        col.label(text="\n设置“底部支撑”：厚度")
+        col.prop(stk_tools_props, "bottom_thinning_float")
+        col.label(text="\n请先选择物体")
         col.operator("objects.santouka_business_mesh_bottom")

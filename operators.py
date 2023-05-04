@@ -1048,7 +1048,6 @@ class OBJECT_PT_SantoukaBusinessMeshBottom(bpy.types.Operator):
                     bpy, tmp_plane_object_remeshed, selected_object, )
                 tmp_bottom_mesh = tmp_plane_shrinkwraped_tuple[0]
                 # now tmp_bottom_mesh project on to the selected_object
-
                 # move tmp_bottom_mesh mesh useless vertices to z = 0, and clean
                 # useless vertices: the part of
                 #   not shrinkwrap project on the selected_object part
@@ -1057,10 +1056,21 @@ class OBJECT_PT_SantoukaBusinessMeshBottom(bpy.types.Operator):
                 # this stash_bottom_object not solidify yet
 
                 # solidify: add solid stash_tmp_bottom_object
-                # TODO: solidify need tickness options for user panel
-                #   default tickness is 0.7mm * 2
+                real_world_solidify_thickness = context.scene.stk_tools_props.bottom_thinning_float/2
+                # thickness = real_world_solidify_thickness / 2
+                # as default unit "m" in blender
+                judge_thickness: bool = (
+                    isinstance(real_world_solidify_thickness, float)
+                    and
+                    real_world_solidify_thickness > 0.05
+                )
+                solidify_thickness_float = (0.7, real_world_solidify_thickness)[
+                    judge_thickness]
+
+                self.report({'INFO'}, "solidify_thickness_float: " +
+                            str(solidify_thickness_float))
                 solidified_object = solidify_direct(
-                    bpy, stash_tmp_bottom_object)
+                    bpy, stash_tmp_bottom_object, solidify_thickness_float)
                 # cuz it maybe have the bad faces, so need remesh again
 
                 # remesh: solidified_object -> final_object
