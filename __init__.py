@@ -5,7 +5,7 @@ bl_info = {
     "blender": (3, 5, 0),
     "category": "Object",
     "author": "Santouka",
-    "version": (0, 1, 1),
+    "version": (0, 1, 2),
     "location": "3D Viewport > Object",
     "description": "A Blender plug-in, toolboxes, to helping 3D printing business studios",
     "warning": "",
