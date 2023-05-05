@@ -981,7 +981,7 @@ class CreateObjectsProjectionToZZero(bpy.types.Operator):
 
 class OBJECT_PT_SantoukaBusinessMeshBottom(bpy.types.Operator):
     bl_idname = "objects.santouka_business_mesh_bottom"
-    bl_label = "创建底部（低精度）"
+    bl_label = "创建底部"
     bl_description = "Create bottom mesh for vacuum forming"
 
     def execute(self, context):
@@ -1021,7 +1021,7 @@ class OBJECT_PT_SantoukaBusinessMeshBottom(bpy.types.Operator):
 
             try:
                 # get thickness from scene props
-                real_world_solidify_thickness = context.scene.stk_tools_props.bottom_thinning_float/2
+                real_world_solidify_thickness = context.scene.stk_tools_props.bottom_thinning_float
                 # get remesh size from scene props
                 bottom_remesh_size = context.scene.stk_tools_props.bottom_remesh_float
 

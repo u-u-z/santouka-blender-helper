@@ -1,7 +1,7 @@
 from bpy.types import Panel
 import bmesh
 
-from . import report
+from . import (report, utils)
 
 
 class STKHelperPanel3DView:
@@ -156,7 +156,6 @@ class VIEW3D_PT_stk_tools_model_handle(STKHelperPanel3DView, Panel):
         col.label(text="移动物体", icon='OBJECT_DATA')
         col.label(text="\n请先选择物体")
         col.operator("object.reset_origin_and_move_to_zero")
-        # col.operator("object.move_to_zero")
 
         col.label(text="投影", icon='LIGHT')
         col.operator("object.create_object_projection")
@@ -167,9 +166,21 @@ class VIEW3D_PT_stk_tools_model_handle(STKHelperPanel3DView, Panel):
         col.operator("object.thinning_object")
 
         col.label(text="底部 Mesh", icon='MESH_TORUS')
-        col.label(text="\n设置“底部支撑”：厚度")
-        col.prop(stk_tools_props, "bottom_thinning_float")
-        col.label(text="\n设置“底部支撑”：支撑密度")
-        col.prop(stk_tools_props, "bottom_remesh_float")
-        col.label(text="\n请先选择物体，后增加底部支撑")
-        col.operator("objects.santouka_business_mesh_bottom")
+        # suggestion remesh size
+        selected_objects = context.selected_objects
+        if selected_objects:
+            col.prop(stk_tools_props, "bottom_thinning_float")
+            selected_object_bounds = utils.get_bounds(selected_objects[-1])
+            tmp_plane_x = selected_object_bounds[1] - selected_object_bounds[0]
+            tmp_plane_y = selected_object_bounds[3] - selected_object_bounds[2]
+            col.label(text=f"目标物体: [{selected_objects[-1].name}]")
+            col.label(
+                text=f"覆盖物体面长宽: {round(tmp_plane_x,4)} x {round(tmp_plane_y,4)}")
+            col.label(
+                text=f"结构最小单元建议: {round((tmp_plane_y, tmp_plane_x)[tmp_plane_y>tmp_plane_x] * 0.01,4)}")
+            col.label(
+                text=f"若有处理后存在破洞-【最小单元】需稍小")
+            col.prop(stk_tools_props, "bottom_remesh_float")
+            col.operator("objects.santouka_business_mesh_bottom")
+        else:
+            col.label(text="没有选择物体! 请选择一个物体")

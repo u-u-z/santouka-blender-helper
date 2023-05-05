@@ -16,6 +16,18 @@ from . import (
     operators,
 )
 
+from bpy.app.handlers import persistent
+
+
+@persistent
+def remesh_suggestion(dummy):
+    selected_objects = bpy.context.selected_objects
+    if selected_objects:
+        # give suggestion about remesh size here
+        print(f"Selected object: {selected_objects[-1].name}")
+    else:
+        print("没有选择物体")
+
 
 class SceneProperties(PropertyGroup):
 
@@ -26,9 +38,9 @@ class SceneProperties(PropertyGroup):
     thinning_float: bpy.props.FloatProperty(name="减薄/增厚量", default=-0.5)
 
     bottom_thinning_float: bpy.props.FloatProperty(
-        name="底部支撑壁厚(mm)", default=1.5)
+        name="壁厚(mm)", default=1.5)
     bottom_remesh_float: bpy.props.FloatProperty(
-        name="底部支撑网格大小(mm)", default=0.3)
+        name="结构最小单", default=0.3)
 
     """
     Properties 3D print helper tools. 
@@ -158,9 +170,11 @@ def addon_register():
     for cls in classes:
         bpy.utils.register_class(cls)
     bpy.types.Scene.stk_tools_props = PointerProperty(type=SceneProperties)
+    bpy.app.handlers.depsgraph_update_post.append(remesh_suggestion)
 
 
 def addon_unregister():
     for cls in classes:
         bpy.utils.unregister_class(cls)
     del bpy.types.Scene.stk_tools_props
+    bpy.app.handlers.depsgraph_update_post.remove(remesh_suggestion)
